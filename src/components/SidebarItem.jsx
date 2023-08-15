@@ -3,10 +3,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function SidebarItem({ to, icon, text }) {
+function SidebarItem({ to, text }) {
   return (
     <li>
-      <Link to={to}>{text}</Link>
+      <Link to={to}>
+        {text}
+      </Link>
     </li>
   );
 }
