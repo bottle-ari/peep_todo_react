@@ -1,6 +1,1 @@
-<<<<<<< HEAD
 runtime: nodejs18
-entrypoint: npm run next
-=======
-runtime: nodejs18
->>>>>>> feature/optimization
