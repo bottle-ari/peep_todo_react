@@ -1,3 +1,6 @@
+import React, { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 // Lazy 로딩을 위해 컴포넌트를 비동기로 불러오기
 const Root = lazy(() => import("./pages/Root"));
 const ScheduledToDo = lazy(() => import("./pages/ScheduledToDo"));
