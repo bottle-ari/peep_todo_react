@@ -5,7 +5,7 @@ import React from "react";
 function OverdueToDo() {
   return (
     <div>
-      <h1>OverdueToDo</h1>
+      <h1>지연된 ToDo</h1>
     </div>
   );
 }
