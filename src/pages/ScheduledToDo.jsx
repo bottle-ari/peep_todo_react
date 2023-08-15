@@ -1,35 +1,7 @@
 // ScheduledToDo.jsx
 import React, { useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import scheduledDummyData from "../dummyData/scheduledDummyDate.json";
-
-const localizer = momentLocalizer(moment);
-
-function CustomMonthView({ events, selectedDate, onDateClick }) {
-  const eventStyleGetter = (event) => {
-    if (selectedDate && moment(event.start).isSame(selectedDate, "day")) {
-      return { className: "selected-date" };
-    }
-    return {};
-  };
-
-  return (
-    <Calendar
-      localizer={localizer}
-      events={events}
-      views={["month"]}
-      defaultView="month"
-      selectable
-      onSelectSlot={(slotInfo) => onDateClick(slotInfo.start)}
-      eventPropGetter={eventStyleGetter}
-      startAccessor="start"
-      endAccessor="end"
-      style={{ height: 500 }}
-    />
-  );
-}
 
 function ScheduledToDo() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -78,11 +50,6 @@ function ScheduledToDo() {
           ) : null
         )}
       </div>
-      <CustomMonthView
-        events={events}
-        selectedDate={selectedDate}
-        onDateClick={handleDateClick}
-      />
     </div>
   );
 }
