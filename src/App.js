@@ -1,13 +1,13 @@
-import React, { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// src/App.tsx
 
-// Lazy 로딩을 위해 컴포넌트를 비동기로 불러오기
-const Root = lazy(() => import("./pages/Root"));
-const ScheduledToDo = lazy(() => import("./pages/ScheduledToDo"));
-const FlexibleToDo = lazy(() => import("./pages/FlexibleToDo"));
-const OverdueToDo = lazy(() => import("./pages/OverdueToDo"));
-const Routine = lazy(() => import("./pages/Routine"));
-const Setting = lazy(() => import("./pages/Setting"));
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Root from "./pages/Root";
+import ScheduledToDo from "./pages/ScheduledToDo";
+import FlexibleToDo from "./pages/FlexibleToDo";
+import OverdueToDo from "./pages/OverdueToDo";
+import Routine from "./pages/Routine";
+import Setting from "./pages/Setting";
 
 const router = createBrowserRouter([
   {
@@ -39,14 +39,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <RouterProvider router={router}>
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* 다른 컴포넌트 */}
-        {router}
-      </Suspense>
-    </RouterProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
