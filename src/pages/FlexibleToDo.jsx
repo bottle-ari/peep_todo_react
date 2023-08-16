@@ -3,8 +3,9 @@
 import React from "react";
 import { useState } from "react";
 import flexibleDummyData from "../dummyData/flexibleDummyData.json";
+import MainLayout from '../components/MainLayout';
 
-function FlexibleToDo() {
+const FlexibleToDo = () => {
   const [categories, setCategories] = useState(flexibleDummyData.categories);
 
   const toggleCheck = (categoryIndex, toDoIndex) => {
@@ -77,5 +78,7 @@ function FlexibleToDo() {
     </>
   );
 }
+
+FlexibleToDo.layout = MainLayout;
 
 export default FlexibleToDo;

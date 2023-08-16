@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import scheduledDummyData from "../dummyData/scheduledDummyDate.json";
+import MainLayout from "@/components/MainLayout";
 
 const localizer = momentLocalizer(moment);
 
@@ -31,7 +32,7 @@ function CustomMonthView({ events, selectedDate, onDateClick }) {
   );
 }
 
-function ScheduledToDo() {
+const ScheduledToDo = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateClick = (date) => {
@@ -54,7 +55,7 @@ function ScheduledToDo() {
       <div>
         {daysData.map((dayData, index) =>
           dayData.date === moment(selectedDate).format("YYYYMMDD") ? (
-            <ul>
+            <ul key={index}>
               {dayData.categories.map((category, categoryIndex) => (
                 <li key={categoryIndex}>
                   {category.categoryName}
@@ -86,5 +87,7 @@ function ScheduledToDo() {
     </div>
   );
 }
+
+ScheduledToDo.layout = MainLayout;
 
 export default ScheduledToDo;
