@@ -9,9 +9,17 @@ import { useListContext } from "../context/ListContext";
 const FlexibleToDo = () => {
   const { flexibleToDoList, setFlexibleToDoList } = useListContext();
   const [newToDo, setNewToDo] = useState("");
+  const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
 
   // category가 클릭되었을때, input이 보이도록
-  const addToDoInCategory = () => {};
+  const handleCategoryClick = (categoryIndex) => {
+    setFocusedCategoryIndex(categoryIndex);
+  };
+
+  // input 다시 안보이도록,
+  const handleBlur = () => {
+    setFocusedCategoryIndex(-1);
+  };
 
   const handleAddToDo = (categoryIndex) => {
     if (newToDo.trim() !== "") {
@@ -48,7 +56,12 @@ const FlexibleToDo = () => {
         <h1>상시 ToDo</h1>
         {flexibleToDoList.map((category, categoryIndex) => (
           <div>
-            <li key={categoryIndex}>{category.name}</li>
+            <li
+              key={categoryIndex}
+              onClick={() => handleCategoryClick(categoryIndex)}
+            >
+              {category.name + " + "}
+            </li>
             <ul>
               {category.toDoList.map((toDo, toDoIndex) =>
                 toDo.check === false ? (
@@ -65,13 +78,17 @@ const FlexibleToDo = () => {
                 ) : null
               )}
             </ul>
-            <input
-              type="text"
-              placeholder="상시ToDo 추가"
-              value={newToDo}
-              onChange={handleInputChange}
-              onKeyDown={handleInputKeyPress(categoryIndex)}
-            />
+            {categoryIndex === focusedCategoryIndex ? (
+              <input
+                type="text"
+                placeholder="상시ToDo 추가"
+                value={newToDo}
+                onChange={handleInputChange}
+                onKeyDown={handleInputKeyPress(categoryIndex)}
+                onBlur={handleBlur}
+                autoFocus
+              />
+            ) : null}
           </div>
         ))}
       </div>

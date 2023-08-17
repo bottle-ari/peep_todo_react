@@ -43,12 +43,7 @@ function Sidebar() {
     <SidebarContainer>
       <div id="sidebar">
         <div id="userProfile">
-          <Image
-            src="https://via.placeholder.com/50x50"
-            alt="Example Image"
-            width={50}
-            height={50}
-          />
+          "Image 가 들어갈 자리에요"
           {"삐약이"}
         </div>
         <nav>
