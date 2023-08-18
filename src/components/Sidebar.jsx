@@ -43,7 +43,7 @@ function Sidebar() {
     <SidebarContainer>
       <div id="sidebar">
         <div id="userProfile">
-          "Image 가 들어갈 자리에요"
+          Image 가 들어갈 자리에요
           {"삐약이"}
         </div>
         <nav>

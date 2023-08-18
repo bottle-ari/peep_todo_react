@@ -55,7 +55,7 @@ const FlexibleToDo = () => {
       <div>
         <h1>상시 ToDo</h1>
         {flexibleToDoList.map((category, categoryIndex) => (
-          <div>
+          <>
             <li
               key={categoryIndex}
               onClick={() => handleCategoryClick(categoryIndex)}
@@ -89,13 +89,13 @@ const FlexibleToDo = () => {
                 autoFocus
               />
             ) : null}
-          </div>
+          </>
         ))}
       </div>
       <div>
         <h1>완료된 ToDo</h1>
         {flexibleToDoList.map((category, categoryIndex) => (
-          <div>
+          <>
             <li key={categoryIndex}>{category.name}</li>
             <ul>
               {category.toDoList.map((toDo, toDoIndex) =>
@@ -113,7 +113,7 @@ const FlexibleToDo = () => {
                 ) : null
               )}
             </ul>
-          </div>
+          </>
         ))}
       </div>
     </>

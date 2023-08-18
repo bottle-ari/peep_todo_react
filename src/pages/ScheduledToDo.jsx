@@ -162,7 +162,7 @@ const ScheduledToDo = () => {
                   .map(
                     (category, categoryIndex) =>
                       category.name == categoryTag && (
-                        <ul>
+                        <ul key={categoryIndex}>
                           {category.toDoList.map((toDo, toDoIndex) => (
                             <li key={toDoIndex}>
                               <label>
