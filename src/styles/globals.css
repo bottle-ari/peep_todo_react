@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --ptd-black-rgb: 29, 29, 29; /* 삐약ToDo 검정 */
+  --primary-rgb: 255, 221, 111; /* 삐약ToDo 메인컬러 : 노란색 */
+  --secondary-dark-rgb: 255, 184, 0; /* 삐약ToDo 서브컬러 : 진한 노란색 */
+  --secondary-light-rgb: 254, 236, 144; /* 삐약ToDo 서브컬러 : 연한 노란색 */
+  --real-white-rgb: 255, 255, 255; /* 진짜 하양 */
+  --ptd-white-rgb: 249, 249, 249; /* 삐약ToDo 하양 */
+  --ptd-light-grey-rgb: 239, 236, 229; /* 삐약ToDo 연한 회색 */
+  --ptd-dark-grey-rgb: 87, 87, 87; /* 삐약ToDO 진한 회색 */
+  --divider-rgb: 226, 226, 226; /* 구분선 색상 */
+  --ptd-red-rgb: 255, 81, 81; /* 삐약ToDo 빨강 */
+  --ptd-blue-rgb: 70, 133, 255; /* 삐약ToDo 파랑 */
 }
 
 /* 다크모드 설정
@@ -18,12 +26,59 @@
 }
 */
 
+@font-face {
+  font-family: "Pretendard Variable";
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url("../../public/fonts/PretendardVariable.woff2")
+    format("woff2-variations");
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: rgb(var(--ptd-black-rgb));
+  background: rgb(var(--real-white-rgb));
+}
+
+#sidebar {
+  width: 220px;
+  height: 100vh; /* 화면 높이에 맞게 사이드바 높이 설정 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgb(var(--ptd-white-rgb));
+  padding: 0px;
+  border-right: 1px solid rgb(var(--divider-rgb));
+}
+
+#sidebar h1 {
+  font-size: 24px;
+}
+
+#sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#sidebar li {
+  padding: 10px 0;
+}
+
+#sidebar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  display: block;
+}
+
+#detail {
+  margin-left: 250px; /* 사이드바 너비만큼 컨텐츠를 이동시킴 */
+  padding: 20px;
+}
+
+#userProfile {
+  background-color: #ffdd6f;
 }
