@@ -3,8 +3,8 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import flexibleDummyData from "../dummyData/flexibleDummyData.json";
-import MainLayout from "../components/MainLayout";
-import { useListContext } from "../context/ListContext";
+import MainLayout from "../components/main_layout";
+import { useListContext } from "../context/list_context";
 
 const FlexibleToDo = () => {
   const { flexibleToDoList, setFlexibleToDoList } = useListContext();

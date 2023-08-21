@@ -3,8 +3,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import MainLayout from "@/components/MainLayout";
-import { useListContext } from "../context/ListContext";
+import MainLayout from "@/components/main_layout";
+import { useListContext } from "../context/list_context";
 
 const localizer = momentLocalizer(moment);
 

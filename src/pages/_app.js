@@ -1,4 +1,4 @@
-import { ListProvider } from "@/context/ListContext";
+import { ListProvider } from "@/context/list_context";
 import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }) {

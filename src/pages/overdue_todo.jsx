@@ -1,6 +1,6 @@
 // src/pages/OverdueToDo.tsx
 
-import MainLayout from "@/components/MainLayout";
+import MainLayout from "@/components/main_layout";
 import React from "react";
 
 const OverdueToDo = () => {
@@ -9,7 +9,7 @@ const OverdueToDo = () => {
       <h1>지연된 ToDo</h1>
     </div>
   );
-}
+};
 
 OverdueToDo.layout = MainLayout;
 
