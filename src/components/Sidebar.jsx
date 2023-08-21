@@ -1,17 +1,8 @@
-import styled from "styled-components";
-import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { useListContext } from "../context/ListContext";
 import "../styles/Root.module.css";
-
-const SidebarContainer = styled.div`
-  width: 260px;
-  min-height: 100vh;
-  background-color: #f7f7f7;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-`;
+import ProfileField from "./sidebar/profile_field";
+import MenuField from "./sidebar/menu_field";
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useListContext();
@@ -40,28 +31,47 @@ function Sidebar() {
   };
 
   return (
-    <SidebarContainer>
+    <>
       <div id="sidebar">
         <div id="userProfile">
-          Image 가 들어갈 자리에요
-          {"삐약이"}
+          <ProfileField name={"삐약이"} email={"B_yacc2@naver.com"} />
         </div>
         <nav>
           <ul>
             <li>
-              <Link href="/ScheduledToDo">계획된 ToDo</Link>
+              <MenuField
+                icon={"/images/icon/note.png"}
+                name={"계획된 ToDo"}
+                link="/ScheduledToDo"
+              />
             </li>
             <li>
-              <Link href="/FlexibleToDo">상시 Todo</Link>
+              <MenuField
+                icon={"/images/icon/stickynote.png"}
+                name={"상시 ToDo"}
+                link="/FlexibleToDo"
+              />
             </li>
             <li>
-              <Link href="/OverdueToDo">지연된 ToDo</Link>
+              <MenuField
+                icon={"/images/icon/clock.png"}
+                name={"지연된 ToDo"}
+                link="/OverdueToDo"
+              />
             </li>
             <li>
-              <Link href="/Routine">루틴</Link>
+              <MenuField
+                icon={"/images/icon/repeatcircle.png"}
+                name={"루틴"}
+                link="/Routine"
+              />
             </li>
             <li>
-              <Link href="/Setting">설정</Link>
+              <MenuField
+                icon={"/images/icon/setting2.png"}
+                name={"설정"}
+                link="/Setting"
+              />
             </li>
           </ul>
         </nav>
@@ -74,6 +84,7 @@ function Sidebar() {
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
         <div>
           <input
+            style={{ width: "219px" }}
             type="text"
             placeholder="카테고리 추가"
             value={newCategory}
@@ -83,7 +94,7 @@ function Sidebar() {
         </div>
       </div>
       <div id="detail"></div>
-    </SidebarContainer>
+    </>
   );
 }
 
