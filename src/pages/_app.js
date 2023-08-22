@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ListProvider>
       <Head>
-        <link rel="shortcut icon" href="/images/profile_image.png" />
+        <link rel="shortcut icon" href="/images/logo.svg" />
       </Head>
       <Layout>
         <Component {...pageProps} />

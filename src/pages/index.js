@@ -5,7 +5,8 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/scheduled_todo");
+    router.push("/login");
+    //router.push("/scheduled_todo");
   }, []);
 
   return null;
