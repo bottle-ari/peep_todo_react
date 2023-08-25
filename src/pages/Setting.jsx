@@ -1,6 +1,6 @@
 // src/pages/Setting.jsx
 
-import MainLayout from "@/components/MainLayout";
+import MainLayout from "@/components/main_layout";
 import React from "react";
 
 const Setting = () => {
@@ -9,7 +9,7 @@ const Setting = () => {
       <h1>Setting</h1>
     </div>
   );
-}
+};
 
 Setting.layout = MainLayout;
 

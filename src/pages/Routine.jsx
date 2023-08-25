@@ -1,6 +1,6 @@
 // src/pages/Routine.jsx
 
-import MainLayout from "@/components/MainLayout";
+import MainLayout from "@/components/main_layout";
 import React from "react";
 
 const Routine = () => {
@@ -9,7 +9,7 @@ const Routine = () => {
       <h1>Routine</h1>
     </div>
   );
-}
+};
 
 Routine.layout = MainLayout;
 

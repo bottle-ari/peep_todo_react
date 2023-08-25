@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useListContext } from "../context/ListContext";
-import "../styles/Root.module.css";
-import ProfileField from "./sidebar/profile_field";
-import MenuField from "./sidebar/menu_field";
+import { useListContext } from "../context/list_context";
+import ProfileField from "./sidebar/profile_item";
+import MenuField from "./sidebar/menu_item";
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useListContext();
@@ -42,35 +41,35 @@ function Sidebar() {
               <MenuField
                 icon={"/images/icon/note.png"}
                 name={"계획된 ToDo"}
-                link="/ScheduledToDo"
+                link="/scheduled_todo"
               />
             </li>
             <li>
               <MenuField
                 icon={"/images/icon/stickynote.png"}
                 name={"상시 ToDo"}
-                link="/FlexibleToDo"
+                link="/constant_todo"
               />
             </li>
             <li>
               <MenuField
                 icon={"/images/icon/clock.png"}
                 name={"지연된 ToDo"}
-                link="/OverdueToDo"
+                link="/overdue_todo"
               />
             </li>
             <li>
               <MenuField
                 icon={"/images/icon/repeatcircle.png"}
                 name={"루틴"}
-                link="/Routine"
+                link="/routine"
               />
             </li>
             <li>
               <MenuField
                 icon={"/images/icon/setting2.png"}
                 name={"설정"}
-                link="/Setting"
+                link="/setting"
               />
             </li>
           </ul>

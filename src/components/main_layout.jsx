@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Sidebar from './Sidebar';
+import Sidebar from './sidebar_layout';
 
 const Container = styled.div`
   display: flex;
