@@ -4,7 +4,9 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import MainLayout from "@/components/main_layout";
-import { useListContext } from "../context/list_context";
+import { useCategoryContext } from "@/context/category_context";
+import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
+import TodoModel from "@/data/data_classes/TodoModel";
 
 const localizer = momentLocalizer(moment);
 
@@ -32,11 +34,11 @@ function CustomMonthView({ events, selectedDate, onDateClick }) {
   );
 }
 
-const ScheduledToDo = () => {
+function ScheduledTodo() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState([]);
-  const { scheduledToDoData, setScheduledToDoData } = useListContext();
-  const { categoryList, setCategoryList } = useListContext();
+  const { scheduledTodoData, setScheduledTodoData } = useScheduledTodoContext();
+  const { categoryList } = useCategoryContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
 
@@ -52,40 +54,85 @@ const ScheduledToDo = () => {
 
   const handleAddToDo = (day, categoryTagIndex) => {
     if (newToDo.trim() !== "") {
-      const updatedScheduledToDoData = new Map(scheduledToDoData);
+      const updatedScheduledTodoData = new Map(scheduledTodoData);
 
-      if (updatedScheduledToDoData.has(day)) {
-        let newCategoryList = [...updatedScheduledToDoData.get(day)];
+      // 선택된 날짜에 ToDo data가 있었다면,
+      if (updatedScheduledTodoData.has(day)) {
+        let newCategoryList = [...updatedScheduledTodoData.get(day)];
 
         let categoryFound = false;
-
         for (let i = 0; i < newCategoryList.length; i++) {
-          if (newCategoryList[i].name === categoryList[categoryTagIndex]) {
-            newCategoryList[i].toDoList.push({ name: newToDo, check: false });
+          // 추가하려는 Todo가, 기존에 존재하는 카테고리에 속한다면,
+          // 기존에 존재하는 카테고리의 하위에 Todo 추가
+          if (
+            newCategoryList[i].category.name ===
+            categoryList[categoryTagIndex].name
+          ) {
+            const currentCategory = newCategoryList[i];
+            newCategoryList[i].todoList.push(
+              new TodoModel({
+                category_id: currentCategory.category.id,
+                reminder_id: null,
+                name: newToDo,
+                completed_at: null,
+                subtodo_list: [],
+                date: null,
+                priority: 0,
+                memo: "",
+                order: currentCategory.todoList.length,
+              })
+            );
             categoryFound = true;
             break;
           }
         }
 
+        // 추가하려는 Todo가, 기존에 존재하는 카테고리에 속하지 않는다면,
+        // 카테고리를 추가하고, 하위에 Todo를 추가
         if (!categoryFound) {
+          const currentCategory = categoryList[categoryTagIndex];
           newCategoryList.push({
-            name: categoryList[categoryTagIndex],
-            toDoList: [{ name: newToDo, check: false }],
+            category: currentCategory,
+            todoList: [
+              new TodoModel({
+                category_id: currentCategory.id,
+                reminder_id: null,
+                name: newToDo,
+                completed_at: null,
+                subtodo_list: [],
+                date: null,
+                priority: 0,
+                memo: "",
+                order: 1,
+              }),
+            ],
           });
         }
 
-        updatedScheduledToDoData.set(day, newCategoryList);
+        updatedScheduledTodoData.set(day, newCategoryList);
       } else {
         // 선택된 날짜에 ToDo data가 없었다면,
         const newCategoryList = [
           {
-            name: categoryList[categoryTagIndex],
-            toDoList: [{ name: newToDo, check: false }],
+            category: categoryList[categoryTagIndex],
+            todoList: [
+              new TodoModel({
+                category_id: categoryList[categoryTagIndex].id,
+                reminder_id: null,
+                name: newToDo,
+                completed_at: null,
+                subtodo_list: [],
+                date: null,
+                priority: 0,
+                memo: "",
+                order: 1,
+              }),
+            ],
           },
         ];
-        updatedScheduledToDoData.set(day, newCategoryList);
+        updatedScheduledTodoData.set(day, newCategoryList);
       }
-      setScheduledToDoData(updatedScheduledToDoData);
+      setScheduledTodoData(updatedScheduledTodoData);
       setNewToDo("");
     }
   };
@@ -104,27 +151,33 @@ const ScheduledToDo = () => {
     setSelectedDate(date);
   };
 
-  const toggleCheck = (day, categoryIndex, toDoIndex) => {
-    const updatedScheduledToDoData = new Map(scheduledToDoData);
+  const toggleCheck = (day, categoryIndex, todoIndex) => {
+    const updatedScheduledTodoData = new Map(scheduledTodoData);
 
-    const newCategoryList = [...updatedScheduledToDoData.get(day)];
-    newCategoryList[categoryIndex] = {
-      ...newCategoryList[categoryIndex],
-      toDoList: newCategoryList[categoryIndex].toDoList.map((toDo, index) =>
-        index === toDoIndex ? { ...toDo, check: !toDo.check } : toDo
-      ),
-    };
+    const newCategoryList = [...updatedScheduledTodoData.get(day)];
 
-    updatedScheduledToDoData.set(day, newCategoryList);
-    setScheduledToDoData(updatedScheduledToDoData);
+    // 완료되지 않은 Todo 일 경우
+    if (
+      newCategoryList[categoryIndex].todoList[todoIndex].completed_at === null
+    ) {
+      newCategoryList[categoryIndex].todoList[todoIndex].completed_at = day;
+    }
+
+    // 완료된 Todo 일 경우
+    else {
+      newCategoryList[categoryIndex].todoList[todoIndex].completed_at = null;
+    }
+
+    updatedScheduledTodoData.set(day, newCategoryList);
+    setScheduledTodoData(updatedScheduledTodoData);
   };
 
   // event setting
   useEffect(() => {
     let newEvents = [];
 
-    scheduledToDoData.forEach((value, key) => {
-      value.map((category) => {
+    scheduledTodoData.forEach((value, key) => {
+      value.map((categoryData) => {
         const year = parseInt(key.slice(0, 4));
         const month = parseInt(key.slice(4, 6));
         const day = parseInt(key.slice(6, 8));
@@ -132,7 +185,7 @@ const ScheduledToDo = () => {
         newEvents = [
           ...newEvents,
           {
-            title: category.name,
+            title: categoryData.category.name,
             start: new Date(year, month - 1, day),
             end: new Date(year, month - 1, day + 1),
           },
@@ -141,7 +194,7 @@ const ScheduledToDo = () => {
         setEvents(newEvents);
       });
     });
-  }, [scheduledToDoData]);
+  }, [scheduledTodoData]);
 
   return (
     <div>
@@ -153,31 +206,31 @@ const ScheduledToDo = () => {
               key={categoryTagIndex}
               onClick={() => handleCategoryClick(categoryTagIndex)}
             >
-              {categoryTag + " +"}
+              {categoryTag.emoji + categoryTag.name + " +"}
             </li>
 
-            {scheduledToDoData.has(moment(selectedDate).format("YYYYMMDD"))
-              ? scheduledToDoData
+            {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD"))
+              ? scheduledTodoData
                   .get(moment(selectedDate).format("YYYYMMDD"))
                   .map(
-                    (category, categoryIndex) =>
-                      category.name == categoryTag && (
+                    (categoryData, categoryIndex) =>
+                      categoryData.category.name == categoryTag.name && (
                         <ul key={categoryIndex}>
-                          {category.toDoList.map((toDo, toDoIndex) => (
-                            <li key={toDoIndex}>
+                          {categoryData.todoList.map((todo, todoIndex) => (
+                            <li key={todoIndex}>
                               <label>
                                 <input
                                   type="checkbox"
-                                  checked={toDo.check}
+                                  checked={todo.completed_at !== null}
                                   onChange={() =>
                                     toggleCheck(
                                       moment(selectedDate).format("YYYYMMDD"),
                                       categoryIndex,
-                                      toDoIndex
+                                      todoIndex
                                     )
                                   }
                                 />
-                                {toDo.name}
+                                {todo.name}
                               </label>
                             </li>
                           ))}
@@ -209,8 +262,8 @@ const ScheduledToDo = () => {
       />
     </div>
   );
-};
+}
 
-ScheduledToDo.layout = MainLayout;
+ScheduledTodo.layout = MainLayout;
 
-export default ScheduledToDo;
+export default ScheduledTodo;

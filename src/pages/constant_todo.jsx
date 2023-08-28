@@ -6,7 +6,7 @@ import MainLayout from "../components/main_layout";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
 
-const ConstantTodo = () => {
+function ConstantTodo() {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
@@ -29,7 +29,7 @@ const ConstantTodo = () => {
       updatedConstantTodoList[categoryIndex].todoList = [
         ...updatedConstantTodoList[categoryIndex].todoList,
         new TodoModel({
-          category_id: currentCategory.id,
+          category_id: currentCategory.category.id,
           reminder_id: null,
           name: newToDo,
           completed_at: null,
@@ -73,6 +73,7 @@ const ConstantTodo = () => {
       updatedConstantTodoList[categoryIndex].todoList[todoIndex].completed_at =
         formattedDate;
     }
+
     // 완료된 Todo 일 경우
     else {
       updatedConstantTodoList[categoryIndex].todoList[todoIndex].completed_at =
@@ -154,7 +155,7 @@ const ConstantTodo = () => {
       </div>
     </>
   );
-};
+}
 
 ConstantTodo.layout = MainLayout;
 
