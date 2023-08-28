@@ -1,26 +1,37 @@
 import { useState } from "react";
-import { useListContext } from "../context/list_context";
 import ProfileField from "./sidebar/profile_item";
 import MenuField from "./sidebar/menu_item";
+import { useCategoryContext } from "@/context/category_context";
+import CategoryModel from "@/data/data_classes/CategoryModel";
+import { useConstantTodoContext } from "@/context/constant_todo_context";
 
 function Sidebar() {
-  const { categoryList, setCategoryList } = useListContext();
-  const { flexibleToDoList, setFlexibleToDoList } = useListContext();
-  const [newCategory, setNewCategory] = useState("");
+  const { categoryList, setCategoryList } = useCategoryContext();
+  const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
+  const [newCategoryName, setNewCategoryName] = useState("");
 
   const handleAddCategory = () => {
-    if (newCategory.trim() !== "") {
+    if (newCategoryName.trim() !== "") {
+      const newCategory = new CategoryModel({
+        id: categoryList.length + 1,
+        name: newCategoryName,
+        color: "#FFDD6F",
+        emoji: "✔️",
+        order: categoryList.length + 1,
+      });
+      // category_context 에 new Category 추가
       setCategoryList([...categoryList, newCategory]);
-      setFlexibleToDoList([
-        ...flexibleToDoList,
-        { name: newCategory, toDoList: [] },
+      // constant_todo_context 에 new Category 추가
+      setConstantTodoList([
+        ...constantTodoList,
+        { category: newCategory, todoList: [] },
       ]);
-      setNewCategory("");
+      setNewCategoryName("");
     }
   };
 
   const handleInputChange = (event) => {
-    setNewCategory(event.target.value);
+    setNewCategoryName(event.target.value);
   };
 
   const handleInputKeyPress = (event) => {
@@ -77,7 +88,7 @@ function Sidebar() {
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
         <ul>
           {categoryList.map((category, index) => (
-            <li key={index}>{category}</li>
+            <li key={index}>{category.emoji + category.name}</li>
           ))}
         </ul>
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
@@ -86,7 +97,7 @@ function Sidebar() {
             style={{ width: "219px" }}
             type="text"
             placeholder="카테고리 추가"
-            value={newCategory}
+            value={newCategoryName}
             onChange={handleInputChange}
             onKeyDown={handleInputKeyPress}
           />

@@ -1,7 +1,7 @@
 // ListContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
-import flexibleDummyData from "../dummyData/flexibleDummyData.json";
-import scheduledDummyData from "../dummyData/scheduledDummyData.json";
+import flexibleDummyData from "../data/dummyData/flexibleDummyData";
+import scheduledDummyData from "../data/dummyData/scheduledDummyData";
 
 const ListContext = createContext();
 

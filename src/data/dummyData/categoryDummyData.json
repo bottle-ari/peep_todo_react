@@ -1,0 +1,18 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "할 일",
+      "emoji": "🤔",
+      "color": "#BD00FF",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "name": "공부",
+      "emoji": "📝",
+      "color": "#00DB58",
+      "order": 2
+    }
+  ]
+}
