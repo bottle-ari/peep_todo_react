@@ -7,6 +7,7 @@ import MainLayout from "@/components/main_layout";
 import { useCategoryContext } from "@/context/category_context";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
+import SideSheet from "@/components/side_sheet";
 
 const localizer = momentLocalizer(moment);
 
@@ -41,6 +42,27 @@ function ScheduledTodo() {
   const { categoryList } = useCategoryContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
+  const [sideSheetState, setSideSheetState] = useState({
+    open: false,
+    categoryIndex: -1,
+    todoIndex: -1,
+  });
+
+  const openSideSheet = (categoryIndex, todoIndex) => {
+    setSideSheetState({
+      open: true,
+      categoryIndex: categoryIndex,
+      todoIndex: todoIndex,
+    });
+  };
+
+  const closeSideSheet = () => {
+    setSideSheetState({
+      open: false,
+      categoryIndex: -1,
+      todoIndex: -1,
+    });
+  };
 
   // category가 클릭되었을때, input이 보이도록
   const handleCategoryClick = (categoryIndex) => {
@@ -76,7 +98,7 @@ function ScheduledTodo() {
                 name: newToDo,
                 completed_at: null,
                 subtodo_list: [],
-                date: null,
+                date: day,
                 priority: 0,
                 memo: "",
                 order: currentCategory.todoList.length,
@@ -100,7 +122,7 @@ function ScheduledTodo() {
                 name: newToDo,
                 completed_at: null,
                 subtodo_list: [],
-                date: null,
+                date: day,
                 priority: 0,
                 memo: "",
                 order: 1,
@@ -122,7 +144,7 @@ function ScheduledTodo() {
                 name: newToDo,
                 completed_at: null,
                 subtodo_list: [],
-                date: null,
+                date: day,
                 priority: 0,
                 memo: "",
                 order: 1,
@@ -149,6 +171,7 @@ function ScheduledTodo() {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    closeSideSheet();
   };
 
   const toggleCheck = (day, categoryIndex, todoIndex) => {
@@ -198,6 +221,18 @@ function ScheduledTodo() {
 
   return (
     <div>
+      {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD")) &&
+        sideSheetState.open && (
+          <SideSheet
+            isOpen={sideSheetState.open}
+            onClose={closeSideSheet}
+            todo={
+              scheduledTodoData.get(moment(selectedDate).format("YYYYMMDD"))[
+                sideSheetState.categoryIndex
+              ].todoList[sideSheetState.todoIndex]
+            }
+          />
+        )}
       <h1>선택한 날짜: {moment(selectedDate).format("YYYYMMDD")}</h1>
       <div>
         {categoryList.map((categoryTag, categoryTagIndex) => (
@@ -218,20 +253,24 @@ function ScheduledTodo() {
                         <ul key={categoryIndex}>
                           {categoryData.todoList.map((todo, todoIndex) => (
                             <li key={todoIndex}>
-                              <label>
-                                <input
-                                  type="checkbox"
-                                  checked={todo.completed_at !== null}
-                                  onChange={() =>
-                                    toggleCheck(
-                                      moment(selectedDate).format("YYYYMMDD"),
-                                      categoryIndex,
-                                      todoIndex
-                                    )
-                                  }
-                                />
+                              <input
+                                type="checkbox"
+                                checked={todo.completed_at !== null}
+                                onChange={() =>
+                                  toggleCheck(
+                                    moment(selectedDate).format("YYYYMMDD"),
+                                    categoryIndex,
+                                    todoIndex
+                                  )
+                                }
+                              />
+                              <span
+                                onClick={() =>
+                                  openSideSheet(categoryIndex, todoIndex)
+                                }
+                              >
                                 {todo.name}
-                              </label>
+                              </span>
                             </li>
                           ))}
                         </ul>

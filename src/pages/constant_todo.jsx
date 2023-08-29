@@ -5,11 +5,33 @@ import { useState } from "react";
 import MainLayout from "../components/main_layout";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
+import SideSheet from "@/components/side_sheet";
 
 function ConstantTodo() {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
+  const [sideSheetState, setSideSheetState] = useState({
+    open: false,
+    categoryIndex: -1,
+    todoIndex: -1,
+  });
+
+  const openSideSheet = (categoryIndex, todoIndex) => {
+    setSideSheetState({
+      open: true,
+      categoryIndex: categoryIndex,
+      todoIndex: todoIndex,
+    });
+  };
+
+  const closeSideSheet = () => {
+    setSideSheetState({
+      open: false,
+      categoryIndex: -1,
+      todoIndex: -1,
+    });
+  };
 
   // category가 클릭되었을때, input이 보이도록
   const handleCategoryClick = (categoryIndex) => {
@@ -86,6 +108,17 @@ function ConstantTodo() {
   return (
     <>
       <div>
+        {constantTodoList.length > 0 && sideSheetState.open && (
+          <SideSheet
+            isOpen={sideSheetState.open}
+            onClose={closeSideSheet}
+            todo={
+              constantTodoList[sideSheetState.categoryIndex].todoList[
+                sideSheetState.todoIndex
+              ]
+            }
+          />
+        )}
         <h1>상시 ToDo</h1>
         {constantTodoList.map((category_data, categoryIndex) => (
           <>
@@ -101,14 +134,16 @@ function ConstantTodo() {
               {category_data.todoList.map((todo, todoIndex) =>
                 todo.completed_at === null ? (
                   <li key={todoIndex}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={todo.completed_at !== null}
-                        onChange={() => toggleCheck(categoryIndex, todoIndex)}
-                      />
+                    <input
+                      type="checkbox"
+                      checked={todo.completed_at !== null}
+                      onChange={() => toggleCheck(categoryIndex, todoIndex)}
+                    />
+                    <span
+                      onClick={() => openSideSheet(categoryIndex, todoIndex)}
+                    >
                       {todo.name}
-                    </label>
+                    </span>
                   </li>
                 ) : null
               )}
@@ -138,14 +173,16 @@ function ConstantTodo() {
               {category_data.todoList.map((todo, todoIndex) =>
                 todo.completed_at !== null ? (
                   <li key={todoIndex}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={todo.completed_at !== null}
-                        onChange={() => toggleCheck(categoryIndex, todoIndex)}
-                      />
+                    <input
+                      type="checkbox"
+                      checked={todo.completed_at !== null}
+                      onChange={() => toggleCheck(categoryIndex, todoIndex)}
+                    />
+                    <span
+                      onClick={() => openSideSheet(categoryIndex, todoIndex)}
+                    >
                       {todo.name}
-                    </label>
+                    </span>
                   </li>
                 ) : null
               )}

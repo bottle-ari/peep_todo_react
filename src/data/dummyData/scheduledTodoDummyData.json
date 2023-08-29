@@ -22,6 +22,7 @@
                 { "subTodoName": "샤워하기", "check": false },
                 { "subTodoName": "스트레칭하기", "check": false }
               ],
+              "date": "20230814",
               "priority": 2,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 1
@@ -35,6 +36,7 @@
                 { "subTodoName": "화분에 물 주기", "check": true },
                 { "subTodoName": "샤워하기", "check": true }
               ],
+              "date": "20230814",
               "priority": 3,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 2
@@ -55,7 +57,8 @@
               "remainder_id": null,
               "name": "영어단어 만 개 외우기",
               "completed_at": null,
-              "subTodoList": "",
+              "subTodoList": [],
+              "date": "20230814",
               "priority": 0,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 1
@@ -65,7 +68,8 @@
               "remainder_id": null,
               "name": "수학 1000문제 풀기",
               "completed_at": 20230827,
-              "subTodoList": "",
+              "subTodoList": [],
+              "date": "20230814",
               "priority": 1,
               "memo": "",
               "order": 2
@@ -96,6 +100,7 @@
                 { "subTodoName": "샤워하기", "check": false },
                 { "subTodoName": "스트레칭하기", "check": false }
               ],
+              "date": "20230816",
               "priority": 2,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 1
@@ -109,6 +114,7 @@
                 { "subTodoName": "화분에 물 주기", "check": true },
                 { "subTodoName": "샤워하기", "check": true }
               ],
+              "date": "20230816",
               "priority": 3,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 2
@@ -129,7 +135,8 @@
               "remainder_id": null,
               "name": "영어단어 만 개 외우기",
               "completed_at": null,
-              "subTodoList": "",
+              "subTodoList": [],
+              "date": "20230816",
               "priority": 0,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 1
@@ -139,7 +146,8 @@
               "remainder_id": null,
               "name": "수학 1000문제 풀기",
               "completed_at": 20230827,
-              "subTodoList": "",
+              "subTodoList": [],
+              "date": "20230816",
               "priority": 1,
               "memo": "",
               "order": 2
@@ -170,6 +178,7 @@
                 { "subTodoName": "샤워하기", "check": false },
                 { "subTodoName": "스트레칭하기", "check": false }
               ],
+              "date": "20230823",
               "priority": 2,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 1
@@ -183,6 +192,7 @@
                 { "subTodoName": "화분에 물 주기", "check": true },
                 { "subTodoName": "샤워하기", "check": true }
               ],
+              "date": "20230823",
               "priority": 3,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 2
@@ -203,7 +213,8 @@
               "remainder_id": null,
               "name": "영어단어 만 개 외우기",
               "completed_at": null,
-              "subTodoList": "",
+              "subTodoList": [],
+              "date": "20230823",
               "priority": 0,
               "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
               "order": 1
@@ -213,7 +224,8 @@
               "remainder_id": null,
               "name": "수학 1000문제 풀기",
               "completed_at": 20230827,
-              "subTodoList": "",
+              "subTodoList": [],
+              "date": "20230823",
               "priority": 1,
               "memo": "",
               "order": 2

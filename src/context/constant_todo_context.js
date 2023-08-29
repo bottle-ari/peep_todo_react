@@ -25,6 +25,7 @@ export const ConstantTodoProvider = ({ children }) => {
             name: todo.name,
             completed_at: todo.completed_at,
             subtodo_list: todo.subTodoList,
+            date: todo.date,
             priority: todo.priority,
             memo: todo.memo,
             order: todo.order,
