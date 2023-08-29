@@ -14,7 +14,11 @@
           "remainder_id": null,
           "name": "집가서 할 일",
           "completed_at": 20230823,
-          "subTodoList": "{\"subTodoList\":[{\"subTodoName\":\"화분에 물 주기\",\"check\":false},{\"subTodoName\":\"샤워하기\",\"check\":false},{\"subTodoName\":\"스트레칭하기\",\"check\":false}]}",
+          "subTodoList": [
+            { "subTodoName": "화분에 물 주기", "check": false },
+            { "subTodoName": "샤워하기", "check": false },
+            { "subTodoName": "스트레칭하기", "check": false }
+          ],
           "priority": 2,
           "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
           "order": 1
@@ -24,7 +28,10 @@
           "remainder_id": null,
           "name": "학교가서 할 일",
           "completed_at": null,
-          "subTodoList": "{\"subTodoList\":[{\"subTodoName\":\"화분에 물 주기\",\"check\":true},{\"subTodoName\":\"샤워하기\",\"check\":true}]}",
+          "subTodoList": [
+            { "subTodoName": "화분에 물 주기", "check": true },
+            { "subTodoName": "샤워하기", "check": true }
+          ],
           "priority": 3,
           "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
           "order": 2
