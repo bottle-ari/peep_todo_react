@@ -1,0 +1,238 @@
+{
+  "contents": [
+    {
+      "date": "20230814",
+      "categories": [
+        {
+          "category": {
+            "id": 1,
+            "name": "할 일",
+            "emoji": "🤔",
+            "color": "#BD00FF",
+            "order": 1
+          },
+          "todoList": [
+            {
+              "category_id": 1,
+              "remainder_id": null,
+              "name": "집가서 할 일",
+              "completed_at": 20230823,
+              "subTodoList": [
+                { "subTodoName": "화분에 물 주기", "check": false },
+                { "subTodoName": "샤워하기", "check": false },
+                { "subTodoName": "스트레칭하기", "check": false }
+              ],
+              "date": "20230814",
+              "priority": 2,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 1
+            },
+            {
+              "category_id": 1,
+              "remainder_id": null,
+              "name": "학교가서 할 일",
+              "completed_at": null,
+              "subTodoList": [
+                { "subTodoName": "화분에 물 주기", "check": true },
+                { "subTodoName": "샤워하기", "check": true }
+              ],
+              "date": "20230814",
+              "priority": 3,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 2
+            }
+          ]
+        },
+        {
+          "category": {
+            "id": 2,
+            "name": "공부",
+            "emoji": "📝",
+            "color": "#00DB58",
+            "order": 2
+          },
+          "todoList": [
+            {
+              "category_id": 2,
+              "remainder_id": null,
+              "name": "영어단어 만 개 외우기",
+              "completed_at": null,
+              "subTodoList": [],
+              "date": "20230814",
+              "priority": 0,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 1
+            },
+            {
+              "category_id": 2,
+              "remainder_id": null,
+              "name": "수학 1000문제 풀기",
+              "completed_at": 20230827,
+              "subTodoList": [],
+              "date": "20230814",
+              "priority": 1,
+              "memo": "",
+              "order": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "20230816",
+      "categories": [
+        {
+          "category": {
+            "id": 1,
+            "name": "할 일",
+            "emoji": "🤔",
+            "color": "#BD00FF",
+            "order": 1
+          },
+          "todoList": [
+            {
+              "category_id": 1,
+              "remainder_id": null,
+              "name": "집가서 할 일",
+              "completed_at": 20230823,
+              "subTodoList": [
+                { "subTodoName": "화분에 물 주기", "check": false },
+                { "subTodoName": "샤워하기", "check": false },
+                { "subTodoName": "스트레칭하기", "check": false }
+              ],
+              "date": "20230816",
+              "priority": 2,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 1
+            },
+            {
+              "category_id": 1,
+              "remainder_id": null,
+              "name": "학교가서 할 일",
+              "completed_at": null,
+              "subTodoList": [
+                { "subTodoName": "화분에 물 주기", "check": true },
+                { "subTodoName": "샤워하기", "check": true }
+              ],
+              "date": "20230816",
+              "priority": 3,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 2
+            }
+          ]
+        },
+        {
+          "category": {
+            "id": 2,
+            "name": "공부",
+            "emoji": "📝",
+            "color": "#00DB58",
+            "order": 2
+          },
+          "todoList": [
+            {
+              "category_id": 2,
+              "remainder_id": null,
+              "name": "영어단어 만 개 외우기",
+              "completed_at": null,
+              "subTodoList": [],
+              "date": "20230816",
+              "priority": 0,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 1
+            },
+            {
+              "category_id": 2,
+              "remainder_id": null,
+              "name": "수학 1000문제 풀기",
+              "completed_at": 20230827,
+              "subTodoList": [],
+              "date": "20230816",
+              "priority": 1,
+              "memo": "",
+              "order": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "20230823",
+      "categories": [
+        {
+          "category": {
+            "id": 1,
+            "name": "할 일",
+            "emoji": "🤔",
+            "color": "#BD00FF",
+            "order": 1
+          },
+          "todoList": [
+            {
+              "category_id": 1,
+              "remainder_id": null,
+              "name": "집가서 할 일",
+              "completed_at": 20230823,
+              "subTodoList": [
+                { "subTodoName": "화분에 물 주기", "check": false },
+                { "subTodoName": "샤워하기", "check": false },
+                { "subTodoName": "스트레칭하기", "check": false }
+              ],
+              "date": "20230823",
+              "priority": 2,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 1
+            },
+            {
+              "category_id": 1,
+              "remainder_id": null,
+              "name": "학교가서 할 일",
+              "completed_at": null,
+              "subTodoList": [
+                { "subTodoName": "화분에 물 주기", "check": true },
+                { "subTodoName": "샤워하기", "check": true }
+              ],
+              "date": "20230823",
+              "priority": 3,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 2
+            }
+          ]
+        },
+        {
+          "category": {
+            "id": 2,
+            "name": "공부",
+            "emoji": "📝",
+            "color": "#00DB58",
+            "order": 2
+          },
+          "todoList": [
+            {
+              "category_id": 2,
+              "remainder_id": null,
+              "name": "영어단어 만 개 외우기",
+              "completed_at": null,
+              "subTodoList": [],
+              "date": "20230823",
+              "priority": 0,
+              "memo": "집가서 하기 귀찮다,,,, 하지만 해야지,,,!",
+              "order": 1
+            },
+            {
+              "category_id": 2,
+              "remainder_id": null,
+              "name": "수학 1000문제 풀기",
+              "completed_at": 20230827,
+              "subTodoList": [],
+              "date": "20230823",
+              "priority": 1,
+              "memo": "",
+              "order": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

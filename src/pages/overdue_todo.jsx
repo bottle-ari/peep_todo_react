@@ -3,14 +3,14 @@
 import MainLayout from "@/components/main_layout";
 import React from "react";
 
-const OverdueToDo = () => {
+function OverdueTodo() {
   return (
     <div>
       <h1>지연된 ToDo</h1>
     </div>
   );
-};
+}
 
-OverdueToDo.layout = MainLayout;
+OverdueTodo.layout = MainLayout;
 
-export default OverdueToDo;
+export default OverdueTodo;

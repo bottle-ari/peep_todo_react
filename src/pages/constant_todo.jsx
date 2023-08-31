@@ -2,14 +2,36 @@
 
 import React, { useContext } from "react";
 import { useState } from "react";
-import flexibleDummyData from "../dummyData/flexibleDummyData.json";
 import MainLayout from "../components/main_layout";
-import { useListContext } from "../context/list_context";
+import { useConstantTodoContext } from "@/context/constant_todo_context";
+import TodoModel from "@/data/data_classes/TodoModel";
+import SideSheet from "@/components/side_sheet";
 
-const FlexibleToDo = () => {
-  const { flexibleToDoList, setFlexibleToDoList } = useListContext();
+function ConstantTodo() {
+  const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
+  const [sideSheetState, setSideSheetState] = useState({
+    open: false,
+    categoryIndex: -1,
+    todoIndex: -1,
+  });
+
+  const openSideSheet = (categoryIndex, todoIndex) => {
+    setSideSheetState({
+      open: true,
+      categoryIndex: categoryIndex,
+      todoIndex: todoIndex,
+    });
+  };
+
+  const closeSideSheet = () => {
+    setSideSheetState({
+      open: false,
+      categoryIndex: -1,
+      todoIndex: -1,
+    });
+  };
 
   // category가 클릭되었을때, input이 보이도록
   const handleCategoryClick = (categoryIndex) => {
@@ -23,12 +45,24 @@ const FlexibleToDo = () => {
 
   const handleAddToDo = (categoryIndex) => {
     if (newToDo.trim() !== "") {
-      const updatedFlexibleToDoList = flexibleToDoList;
-      updatedFlexibleToDoList[categoryIndex].toDoList = [
-        ...updatedFlexibleToDoList[categoryIndex].toDoList,
-        { name: newToDo, check: false },
+      const updatedConstantTodoList = constantTodoList;
+      const currentCategory = updatedConstantTodoList[categoryIndex];
+
+      updatedConstantTodoList[categoryIndex].todoList = [
+        ...updatedConstantTodoList[categoryIndex].todoList,
+        new TodoModel({
+          category_id: currentCategory.category.id,
+          reminder_id: null,
+          name: newToDo,
+          completed_at: null,
+          subtodo_list: [],
+          date: null,
+          priority: 0,
+          memo: "",
+          order: currentCategory.todoList.length,
+        }),
       ];
-      setFlexibleToDoList(updatedFlexibleToDoList);
+      setConstantTodoList(updatedConstantTodoList);
       setNewToDo("");
     }
   };
@@ -43,37 +77,73 @@ const FlexibleToDo = () => {
     }
   };
 
-  const toggleCheck = (categoryIndex, toDoIndex) => {
-    const updatedFlexibleToDoList = [...flexibleToDoList];
-    updatedFlexibleToDoList[categoryIndex].toDoList[toDoIndex].check =
-      !updatedFlexibleToDoList[categoryIndex].toDoList[toDoIndex].check;
-    setFlexibleToDoList(updatedFlexibleToDoList);
+  const toggleCheck = (categoryIndex, todoIndex) => {
+    const updatedConstantTodoList = [...constantTodoList];
+
+    // 완료되지 않은 Todo 일 경우
+    if (
+      updatedConstantTodoList[categoryIndex].todoList[todoIndex]
+        .completed_at === null
+    ) {
+      // 현재 완료된 날짜 가져오기
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+      const day = String(currentDate.getDate()).padStart(2, "0");
+
+      const formattedDate = `${year}${month}${day}`;
+      updatedConstantTodoList[categoryIndex].todoList[todoIndex].completed_at =
+        formattedDate;
+    }
+
+    // 완료된 Todo 일 경우
+    else {
+      updatedConstantTodoList[categoryIndex].todoList[todoIndex].completed_at =
+        null;
+    }
+
+    setConstantTodoList(updatedConstantTodoList);
   };
 
   return (
     <>
       <div>
+        {constantTodoList.length > 0 && sideSheetState.open && (
+          <SideSheet
+            isOpen={sideSheetState.open}
+            onClose={closeSideSheet}
+            todo={
+              constantTodoList[sideSheetState.categoryIndex].todoList[
+                sideSheetState.todoIndex
+              ]
+            }
+          />
+        )}
         <h1>상시 ToDo</h1>
-        {flexibleToDoList.map((category, categoryIndex) => (
+        {constantTodoList.map((category_data, categoryIndex) => (
           <>
             <li
               key={categoryIndex}
               onClick={() => handleCategoryClick(categoryIndex)}
             >
-              {category.name + " + "}
+              {category_data.category.emoji +
+                category_data.category.name +
+                " + "}
             </li>
             <ul>
-              {category.toDoList.map((toDo, toDoIndex) =>
-                toDo.check === false ? (
-                  <li key={toDoIndex}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={toDo.check}
-                        onChange={() => toggleCheck(categoryIndex, toDoIndex)}
-                      />
-                      {toDo.name}
-                    </label>
+              {category_data.todoList.map((todo, todoIndex) =>
+                todo.completed_at === null ? (
+                  <li key={todoIndex}>
+                    <input
+                      type="checkbox"
+                      checked={todo.completed_at !== null}
+                      onChange={() => toggleCheck(categoryIndex, todoIndex)}
+                    />
+                    <span
+                      onClick={() => openSideSheet(categoryIndex, todoIndex)}
+                    >
+                      {todo.name}
+                    </span>
                   </li>
                 ) : null
               )}
@@ -94,21 +164,25 @@ const FlexibleToDo = () => {
       </div>
       <div>
         <h1>완료된 ToDo</h1>
-        {flexibleToDoList.map((category, categoryIndex) => (
+        {constantTodoList.map((category_data, categoryIndex) => (
           <>
-            <li key={categoryIndex}>{category.name}</li>
+            <li key={categoryIndex}>
+              {category_data.category.emoji + category_data.category.name}
+            </li>
             <ul>
-              {category.toDoList.map((toDo, toDoIndex) =>
-                toDo.check === true ? (
-                  <li key={toDoIndex}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={toDo.check}
-                        onChange={() => toggleCheck(categoryIndex, toDoIndex)}
-                      />
-                      {toDo.name}
-                    </label>
+              {category_data.todoList.map((todo, todoIndex) =>
+                todo.completed_at !== null ? (
+                  <li key={todoIndex}>
+                    <input
+                      type="checkbox"
+                      checked={todo.completed_at !== null}
+                      onChange={() => toggleCheck(categoryIndex, todoIndex)}
+                    />
+                    <span
+                      onClick={() => openSideSheet(categoryIndex, todoIndex)}
+                    >
+                      {todo.name}
+                    </span>
                   </li>
                 ) : null
               )}
@@ -118,8 +192,8 @@ const FlexibleToDo = () => {
       </div>
     </>
   );
-};
+}
 
-FlexibleToDo.layout = MainLayout;
+ConstantTodo.layout = MainLayout;
 
-export default FlexibleToDo;
+export default ConstantTodo;

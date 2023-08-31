@@ -1,0 +1,29 @@
+/* components/SideSheet.module.css */
+.side-sheet {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: right 0.3s ease-out;
+  z-index: 1000;
+}
+
+.open {
+  right: 0;
+}
+
+.content {
+  padding: 20px;
+}
+
+.content h2 {
+  margin-bottom: 10px;
+}
+
+.content button {
+  display: block;
+  margin-top: 10px;
+}
