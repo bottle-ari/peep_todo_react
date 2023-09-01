@@ -7,7 +7,8 @@ import MainLayout from "@/components/main_layout";
 import { useCategoryContext } from "@/context/category_context";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
-import SideSheet from "@/components/side_sheet";
+import ScheduledTodoSideSheet from "@/components/scheduled_todo/scheduled_todo_side_sheet";
+import ScheduledTodoItem from "@/components/scheduled_todo/scheduled_todo_item";
 
 const localizer = momentLocalizer(moment);
 
@@ -174,27 +175,6 @@ function ScheduledTodo() {
     closeSideSheet();
   };
 
-  const toggleCheck = (day, categoryIndex, todoIndex) => {
-    const updatedScheduledTodoData = new Map(scheduledTodoData);
-
-    const newCategoryList = [...updatedScheduledTodoData.get(day)];
-
-    // 완료되지 않은 Todo 일 경우
-    if (
-      newCategoryList[categoryIndex].todoList[todoIndex].completed_at === null
-    ) {
-      newCategoryList[categoryIndex].todoList[todoIndex].completed_at = day;
-    }
-
-    // 완료된 Todo 일 경우
-    else {
-      newCategoryList[categoryIndex].todoList[todoIndex].completed_at = null;
-    }
-
-    updatedScheduledTodoData.set(day, newCategoryList);
-    setScheduledTodoData(updatedScheduledTodoData);
-  };
-
   // event setting
   useEffect(() => {
     let newEvents = [];
@@ -223,7 +203,7 @@ function ScheduledTodo() {
     <div>
       {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD")) &&
         sideSheetState.open && (
-          <SideSheet
+          <ScheduledTodoSideSheet
             isOpen={sideSheetState.open}
             onClose={closeSideSheet}
             todo={
@@ -252,26 +232,14 @@ function ScheduledTodo() {
                       categoryData.category.name == categoryTag.name && (
                         <ul key={categoryIndex}>
                           {categoryData.todoList.map((todo, todoIndex) => (
-                            <li key={todoIndex}>
-                              <input
-                                type="checkbox"
-                                checked={todo.completed_at !== null}
-                                onChange={() =>
-                                  toggleCheck(
-                                    moment(selectedDate).format("YYYYMMDD"),
-                                    categoryIndex,
-                                    todoIndex
-                                  )
-                                }
-                              />
-                              <span
-                                onClick={() =>
-                                  openSideSheet(categoryIndex, todoIndex)
-                                }
-                              >
-                                {todo.name}
-                              </span>
-                            </li>
+                            <ScheduledTodoItem
+                              color={categoryData.category.color}
+                              todo={todo}
+                              selectedDate={selectedDate}
+                              categoryIndex={categoryIndex}
+                              todoIndex={todoIndex}
+                              openSideSheet={openSideSheet}
+                            />
                           ))}
                         </ul>
                       )
@@ -280,7 +248,7 @@ function ScheduledTodo() {
             {categoryTagIndex === focusedCategoryIndex ? (
               <input
                 type="text"
-                placeholder="상시ToDo 추가"
+                placeholder="ToDo 추가"
                 value={newToDo}
                 onChange={handleInputChange}
                 onKeyDown={handleInputKeyPress(

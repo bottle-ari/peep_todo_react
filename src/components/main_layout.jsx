@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Sidebar from './sidebar_layout';
+import styled from "styled-components";
+import Sidebar from "./sidebar_layout";
 
 const Container = styled.div`
   display: flex;
@@ -14,9 +14,7 @@ const MainLayout = ({ children }) => {
   return (
     <Container>
       <Sidebar />
-      <Content>
-        {children}
-      </Content>
+      <Content>{children}</Content>
     </Container>
   );
 };

@@ -1,8 +1,8 @@
 // SideSheet.jsx
 import React, { useState } from "react";
-import styles from "../styles/SideSheet.module.css"; // module.css 파일 임포트
+import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임포트
 
-function SideSheet({ isOpen, onClose, todo }) {
+function ScheduledTodoSideSheet({ isOpen, onClose, todo }) {
   /*
   const toggleCheck = (subtodoIndex) => {
     todo.subtodo_list[subtodoIndex].check =
@@ -44,4 +44,4 @@ function SideSheet({ isOpen, onClose, todo }) {
   );
 }
 
-export default SideSheet;
+export default ScheduledTodoSideSheet;
