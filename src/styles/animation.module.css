@@ -1,0 +1,59 @@
+/* dragging animation of peep*/
+.peep {
+  width: 140px;
+  height: 140px;
+  cursor: -webkit-grab;
+  will-change: transform;
+  user-select: none;
+  touch-action: none;
+
+}
+
+.peep:active {
+  cursor: -webkit-grabbing;
+  touch-action: none;
+}
+
+.animated_peep {
+  position: absolute;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* moving animation of peep   60 -80 */
+
+.box{
+  position: absolute;
+  offset: path('M 60 -30 L 60 -150 L 60 -30 M -160 60 L -280 60 L -160 60 M 60 180 L 60 300 L 60 180 M 300 60 L 420 60 L 300 60');
+  animation: moveto 5s ease;
+  animation-iteration-count: 1  ;
+}
+
+.box:after{
+  content:url(../../public/images/logo.svg);
+  display: block;
+}
+
+@keyframes moveto{
+  0%{
+      offset-distance: 0%;
+      offset-rotate: 0deg;
+  }
+  25%{
+    offset-distance: 25%;
+    offset-rotate: 270deg;
+  }
+  50%{
+    offset-distance: 50%;
+    offset-rotate: 30deg;
+  }
+  75%{
+    offset-distance: 75%;
+    offset-rotate: 270deg;
+  }
+  100%{
+      offset-distance: 100%;
+      offset-rotate: 0deg;
+  }
+}
+
+
