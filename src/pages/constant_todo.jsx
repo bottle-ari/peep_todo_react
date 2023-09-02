@@ -90,6 +90,8 @@ function ConstantTodo() {
                 sideSheetState.todoIndex
               ]
             }
+            categoryIndex={sideSheetState.categoryIndex}
+            todoIndex={sideSheetState.todoIndex}
           />
         )}
         <h1>상시 ToDo</h1>
@@ -107,8 +109,6 @@ function ConstantTodo() {
               {category_data.todoList.map((todo, todoIndex) =>
                 todo.completed_at === null ? (
                   <ConstantTodoItem
-                    color={category_data.category.color}
-                    todo={todo}
                     categoryIndex={categoryIndex}
                     todoIndex={todoIndex}
                     openSideSheet={openSideSheet}
@@ -141,8 +141,6 @@ function ConstantTodo() {
               {category_data.todoList.map((todo, todoIndex) =>
                 todo.completed_at !== null ? (
                   <ConstantTodoItem
-                    color={category_data.category.color}
-                    todo={todo}
                     categoryIndex={categoryIndex}
                     todoIndex={todoIndex}
                     openSideSheet={openSideSheet}

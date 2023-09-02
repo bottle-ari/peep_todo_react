@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 
-function ConstantTodoItem({
-  color,
-  todo,
-  categoryIndex,
-  todoIndex,
-  openSideSheet,
-}) {
+function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
+  const todo = constantTodoList[categoryIndex].todoList[todoIndex];
+  const color = constantTodoList[categoryIndex].category.color;
 
   const toggleCheck = (categoryIndex, todoIndex) => {
     const updatedConstantTodoList = [...constantTodoList];

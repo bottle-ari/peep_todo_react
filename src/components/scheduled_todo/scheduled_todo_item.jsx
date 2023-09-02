@@ -4,14 +4,17 @@ import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import moment from "moment";
 
 function ScheduledTodoItem({
-  color,
-  todo,
   selectedDate,
   categoryIndex,
   todoIndex,
   openSideSheet,
 }) {
   const { scheduledTodoData, setScheduledTodoData } = useScheduledTodoContext();
+  const categoryData = scheduledTodoData.get(
+    moment(selectedDate).format("YYYYMMDD")
+  )[categoryIndex];
+  const todo = categoryData.todoList[todoIndex];
+  const color = categoryData.category.color;
 
   const toggleCheck = (day, categoryIndex, todoIndex) => {
     const updatedScheduledTodoData = new Map(scheduledTodoData);

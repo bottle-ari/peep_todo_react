@@ -206,11 +206,9 @@ function ScheduledTodo() {
           <ScheduledTodoSideSheet
             isOpen={sideSheetState.open}
             onClose={closeSideSheet}
-            todo={
-              scheduledTodoData.get(moment(selectedDate).format("YYYYMMDD"))[
-                sideSheetState.categoryIndex
-              ].todoList[sideSheetState.todoIndex]
-            }
+            selectedDate={selectedDate}
+            categoryIndex={sideSheetState.categoryIndex}
+            todoIndex={sideSheetState.todoIndex}
           />
         )}
       <h1>선택한 날짜: {moment(selectedDate).format("YYYYMMDD")}</h1>
@@ -233,8 +231,6 @@ function ScheduledTodo() {
                         <ul key={categoryIndex}>
                           {categoryData.todoList.map((todo, todoIndex) => (
                             <ScheduledTodoItem
-                              color={categoryData.category.color}
-                              todo={todo}
                               selectedDate={selectedDate}
                               categoryIndex={categoryIndex}
                               todoIndex={todoIndex}

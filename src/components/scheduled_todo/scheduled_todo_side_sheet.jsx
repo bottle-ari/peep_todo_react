@@ -1,21 +1,36 @@
 // SideSheet.jsx
 import React, { useState } from "react";
 import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임포트
+import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
+import moment from "moment";
+import ScheduledTodoItem from "./scheduled_todo_item";
 
-function ScheduledTodoSideSheet({ isOpen, onClose, todo }) {
-  /*
-  const toggleCheck = (subtodoIndex) => {
-    todo.subtodo_list[subtodoIndex].check =
-      !todo.subtodo_list[subtodoIndex].check;
-  };
-  */
+function ScheduledTodoSideSheet({
+  isOpen,
+  onClose,
+  selectedDate,
+  categoryIndex,
+  todoIndex,
+}) {
+  const { scheduledTodoData, setScheduledTodoData } = useScheduledTodoContext();
+  const categoryData = scheduledTodoData.get(
+    moment(selectedDate).format("YYYYMMDD")
+  )[categoryIndex];
+  const todo = categoryData.todoList[todoIndex];
+
+  const openSideSheet = (categoryIndex, todoIndex) => {};
 
   return (
     <div className={`${styles["side-sheet"]} ${isOpen ? styles.open : ""}`}>
       <div className={`${styles.content}`}>
         <h1>Todo 상세</h1>
         <div>
-          <h2>{todo.name}</h2>
+          <ScheduledTodoItem
+            selectedDate={selectedDate}
+            categoryIndex={categoryIndex}
+            todoIndex={todoIndex}
+            openSideSheet={openSideSheet}
+          />
           <ul>
             {todo.subtodo_list.map((subtodo, subtodoIndex) => (
               <li key={subtodoIndex}>
