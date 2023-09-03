@@ -42,3 +42,6 @@ jobs:
         with:
           deliverables: app.yaml
           project_id: ${{ secrets.PROJECT_ID }}
+
+      - name: Deploy dispatch.yaml to App Engine
+        run: gcloud app deploy dispatch.yaml
