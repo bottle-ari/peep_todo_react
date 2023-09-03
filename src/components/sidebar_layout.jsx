@@ -4,6 +4,7 @@ import MenuField from "./sidebar/menu_item";
 import { useCategoryContext } from "@/context/category_context";
 import CategoryModel from "@/data/data_classes/CategoryModel";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
+import CategoryItem from "./sidebar/category_item";
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useCategoryContext();
@@ -18,6 +19,7 @@ function Sidebar() {
         color: "#FFDD6F",
         emoji: "✔️",
         order: categoryList.length + 1,
+        selected: false,
       });
       // category_context 에 new Category 추가
       setCategoryList([...categoryList, newCategory]);
@@ -88,7 +90,7 @@ function Sidebar() {
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
         <ul>
           {categoryList.map((category, index) => (
-            <li key={index}>{category.emoji + category.name}</li>
+            <CategoryItem key={index} categoryIndex={index} />
           ))}
         </ul>
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />

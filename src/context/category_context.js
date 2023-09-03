@@ -7,6 +7,7 @@ const CategoryContext = createContext();
 
 export const CategoryProvider = ({ children }) => {
   const [categoryList, setCategoryList] = useState([]);
+  const [selectedCount, setSelectedCount] = useState(0);
 
   // categoryList init from .json
   useEffect(() => {
@@ -20,6 +21,7 @@ export const CategoryProvider = ({ children }) => {
         color: category_data.color,
         emoji: category_data.emoji,
         order: category_data.order,
+        selected: false,
       });
 
       initCategoryList = [...initCategoryList, category];
@@ -33,6 +35,8 @@ export const CategoryProvider = ({ children }) => {
       value={{
         categoryList,
         setCategoryList,
+        selectedCount,
+        setSelectedCount,
       }}
     >
       {children}
