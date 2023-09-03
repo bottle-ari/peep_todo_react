@@ -2,8 +2,8 @@
 .side-sheet {
   position: fixed;
   top: 0;
-  right: -300px;
-  width: 300px;
+  right: -calc(50% - 110px);
+  width: calc(50% - 110px);
   height: 100%;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
