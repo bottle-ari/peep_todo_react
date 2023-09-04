@@ -3,11 +3,15 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import MainLayout from "../components/main_layout";
+import { useCategoryContext } from "@/context/category_context";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
-import SideSheet from "@/components/side_sheet";
+import ConstantTodoSideSheet from "@/components/constant_todo/constant_todo_side_sheet";
+import ConstantTodoItem from "@/components/constant_todo/constant_todo_item";
 
 function ConstantTodo() {
+  const { categoryList } = useCategoryContext();
+  const { selectedCount } = useCategoryContext();
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
@@ -77,118 +81,188 @@ function ConstantTodo() {
     }
   };
 
-  const toggleCheck = (categoryIndex, todoIndex) => {
-    const updatedConstantTodoList = [...constantTodoList];
-
-    // 완료되지 않은 Todo 일 경우
-    if (
-      updatedConstantTodoList[categoryIndex].todoList[todoIndex]
-        .completed_at === null
-    ) {
-      // 현재 완료된 날짜 가져오기
-      const currentDate = new Date();
-      const year = currentDate.getFullYear();
-      const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-      const day = String(currentDate.getDate()).padStart(2, "0");
-
-      const formattedDate = `${year}${month}${day}`;
-      updatedConstantTodoList[categoryIndex].todoList[todoIndex].completed_at =
-        formattedDate;
-    }
-
-    // 완료된 Todo 일 경우
-    else {
-      updatedConstantTodoList[categoryIndex].todoList[todoIndex].completed_at =
-        null;
-    }
-
-    setConstantTodoList(updatedConstantTodoList);
-  };
-
   return (
     <>
-      <div>
-        {constantTodoList.length > 0 && sideSheetState.open && (
-          <SideSheet
-            isOpen={sideSheetState.open}
-            onClose={closeSideSheet}
-            todo={
-              constantTodoList[sideSheetState.categoryIndex].todoList[
-                sideSheetState.todoIndex
-              ]
-            }
-          />
-        )}
-        <h1>상시 ToDo</h1>
-        {constantTodoList.map((category_data, categoryIndex) => (
-          <>
-            <li
-              key={categoryIndex}
-              onClick={() => handleCategoryClick(categoryIndex)}
-            >
-              {category_data.category.emoji +
-                category_data.category.name +
-                " + "}
-            </li>
-            <ul>
-              {category_data.todoList.map((todo, todoIndex) =>
-                todo.completed_at === null ? (
-                  <li key={todoIndex}>
-                    <input
-                      type="checkbox"
-                      checked={todo.completed_at !== null}
-                      onChange={() => toggleCheck(categoryIndex, todoIndex)}
-                    />
-                    <span
-                      onClick={() => openSideSheet(categoryIndex, todoIndex)}
-                    >
-                      {todo.name}
-                    </span>
+      {constantTodoList.length > 0 && sideSheetState.open && (
+        <ConstantTodoSideSheet
+          isOpen={sideSheetState.open}
+          onClose={closeSideSheet}
+          todo={
+            constantTodoList[sideSheetState.categoryIndex].todoList[
+              sideSheetState.todoIndex
+            ]
+          }
+          categoryIndex={sideSheetState.categoryIndex}
+          todoIndex={sideSheetState.todoIndex}
+        />
+      )}
+
+      <div className="flex">
+        <div className="w-1/2">
+          <h1>상시 ToDo</h1>
+          {selectedCount === 0 ? (
+            <>
+              {categoryList.map((categoryTag, categoryTagIndex) => (
+                <>
+                  <li
+                    key={categoryTagIndex}
+                    onClick={() => handleCategoryClick(categoryTagIndex)}
+                  >
+                    {categoryTag.emoji + categoryTag.name + " +"}
                   </li>
-                ) : null
-              )}
-            </ul>
-            {categoryIndex === focusedCategoryIndex ? (
-              <input
-                type="text"
-                placeholder="상시ToDo 추가"
-                value={newToDo}
-                onChange={handleInputChange}
-                onKeyDown={handleInputKeyPress(categoryIndex)}
-                onBlur={handleBlur}
-                autoFocus
-              />
-            ) : null}
-          </>
-        ))}
-      </div>
-      <div>
-        <h1>완료된 ToDo</h1>
-        {constantTodoList.map((category_data, categoryIndex) => (
-          <>
-            <li key={categoryIndex}>
-              {category_data.category.emoji + category_data.category.name}
-            </li>
-            <ul>
-              {category_data.todoList.map((todo, todoIndex) =>
-                todo.completed_at !== null ? (
-                  <li key={todoIndex}>
+
+                  {constantTodoList.map(
+                    (categoryData, categoryIndex) =>
+                      categoryData.category.name === categoryTag.name && (
+                        <ul key={categoryIndex}>
+                          {categoryData.todoList.map((todo, todoIndex) =>
+                            todo.completed_at === null ? (
+                              <ConstantTodoItem
+                                key={todoIndex}
+                                categoryIndex={categoryIndex}
+                                todoIndex={todoIndex}
+                                openSideSheet={openSideSheet}
+                              />
+                            ) : null
+                          )}
+                        </ul>
+                      )
+                  )}
+
+                  {categoryTagIndex === focusedCategoryIndex ? (
                     <input
-                      type="checkbox"
-                      checked={todo.completed_at !== null}
-                      onChange={() => toggleCheck(categoryIndex, todoIndex)}
+                      key={categoryTagIndex}
+                      type="text"
+                      placeholder="상시ToDo 추가"
+                      value={newToDo}
+                      onChange={handleInputChange}
+                      onKeyDown={handleInputKeyPress(categoryTagIndex)}
+                      onBlur={handleBlur}
+                      autoFocus
                     />
-                    <span
-                      onClick={() => openSideSheet(categoryIndex, todoIndex)}
-                    >
-                      {todo.name}
-                    </span>
-                  </li>
-                ) : null
+                  ) : null}
+                </>
+              ))}
+            </>
+          ) : (
+            <>
+              {categoryList.map(
+                (categoryTag, categoryTagIndex) =>
+                  categoryTag.selected && (
+                    <>
+                      <li
+                        key={categoryTagIndex}
+                        onClick={() => handleCategoryClick(categoryTagIndex)}
+                      >
+                        {categoryTag.emoji + categoryTag.name + " +"}
+                      </li>
+
+                      {constantTodoList.map(
+                        (categoryData, categoryIndex) =>
+                          categoryData.category.name === categoryTag.name && (
+                            <ul key={categoryIndex}>
+                              {categoryData.todoList.map((todo, todoIndex) =>
+                                todo.completed_at === null ? (
+                                  <ConstantTodoItem
+                                    key={todoIndex}
+                                    categoryIndex={categoryIndex}
+                                    todoIndex={todoIndex}
+                                    openSideSheet={openSideSheet}
+                                  />
+                                ) : null
+                              )}
+                            </ul>
+                          )
+                      )}
+
+                      {categoryTagIndex === focusedCategoryIndex ? (
+                        <input
+                          key={categoryTagIndex}
+                          type="text"
+                          placeholder="상시ToDo 추가"
+                          value={newToDo}
+                          onChange={handleInputChange}
+                          onKeyDown={handleInputKeyPress(categoryTagIndex)}
+                          onBlur={handleBlur}
+                          autoFocus
+                        />
+                      ) : null}
+                    </>
+                  )
               )}
-            </ul>
-          </>
-        ))}
+            </>
+          )}
+        </div>
+
+        <div className="w-1/2">
+          <h1>완료된 ToDo</h1>
+          {selectedCount === 0 ? (
+            <>
+              {categoryList.map((categoryTag, categoryTagIndex) => (
+                <>
+                  <li
+                    key={categoryTagIndex}
+                    onClick={() => handleCategoryClick(categoryTagIndex)}
+                  >
+                    {categoryTag.emoji + categoryTag.name}
+                  </li>
+
+                  {constantTodoList.map(
+                    (categoryData, categoryIndex) =>
+                      categoryData.category.name === categoryTag.name && (
+                        <ul key={categoryIndex}>
+                          {categoryData.todoList.map((todo, todoIndex) =>
+                            todo.completed_at !== null ? (
+                              <ConstantTodoItem
+                                key={todoIndex}
+                                categoryIndex={categoryIndex}
+                                todoIndex={todoIndex}
+                                openSideSheet={openSideSheet}
+                              />
+                            ) : null
+                          )}
+                        </ul>
+                      )
+                  )}
+                </>
+              ))}
+            </>
+          ) : (
+            <>
+              {categoryList.map(
+                (categoryTag, categoryTagIndex) =>
+                  categoryTag.selected && (
+                    <>
+                      <li
+                        key={categoryTagIndex}
+                        onClick={() => handleCategoryClick(categoryTagIndex)}
+                      >
+                        {categoryTag.emoji + categoryTag.name}
+                      </li>
+
+                      {constantTodoList.map(
+                        (categoryData, categoryIndex) =>
+                          categoryData.category.name === categoryTag.name && (
+                            <ul key={categoryIndex}>
+                              {categoryData.todoList.map((todo, todoIndex) =>
+                                todo.completed_at !== null ? (
+                                  <ConstantTodoItem
+                                    key={todoIndex}
+                                    categoryIndex={categoryIndex}
+                                    todoIndex={todoIndex}
+                                    openSideSheet={openSideSheet}
+                                  />
+                                ) : null
+                              )}
+                            </ul>
+                          )
+                      )}
+                    </>
+                  )
+              )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

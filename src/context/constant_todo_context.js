@@ -42,6 +42,7 @@ export const ConstantTodoProvider = ({ children }) => {
             emoji: category_data.category.emoji,
             color: category_data.category.color,
             order: category_data.category.order,
+            selected: false,
           }),
           todoList: initTodoList,
         },

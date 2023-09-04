@@ -25,6 +25,7 @@ export const ScheduledTodoProvider = ({ children }) => {
             emoji: categoryData.category.emoji,
             color: categoryData.category.color,
             order: categoryData.category.order,
+            selected: false,
           }),
           todoList: [],
         };

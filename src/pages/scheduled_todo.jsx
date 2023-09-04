@@ -7,7 +7,8 @@ import MainLayout from "@/components/main_layout";
 import { useCategoryContext } from "@/context/category_context";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
-import SideSheet from "@/components/side_sheet";
+import ScheduledTodoSideSheet from "@/components/scheduled_todo/scheduled_todo_side_sheet";
+import ScheduledTodoItem from "@/components/scheduled_todo/scheduled_todo_item";
 
 const localizer = momentLocalizer(moment);
 
@@ -40,6 +41,7 @@ function ScheduledTodo() {
   const [events, setEvents] = useState([]);
   const { scheduledTodoData, setScheduledTodoData } = useScheduledTodoContext();
   const { categoryList } = useCategoryContext();
+  const { selectedCount } = useCategoryContext();
   const [newToDo, setNewToDo] = useState("");
   const [focusedCategoryIndex, setFocusedCategoryIndex] = useState(-1);
   const [sideSheetState, setSideSheetState] = useState({
@@ -174,27 +176,6 @@ function ScheduledTodo() {
     closeSideSheet();
   };
 
-  const toggleCheck = (day, categoryIndex, todoIndex) => {
-    const updatedScheduledTodoData = new Map(scheduledTodoData);
-
-    const newCategoryList = [...updatedScheduledTodoData.get(day)];
-
-    // 완료되지 않은 Todo 일 경우
-    if (
-      newCategoryList[categoryIndex].todoList[todoIndex].completed_at === null
-    ) {
-      newCategoryList[categoryIndex].todoList[todoIndex].completed_at = day;
-    }
-
-    // 완료된 Todo 일 경우
-    else {
-      newCategoryList[categoryIndex].todoList[todoIndex].completed_at = null;
-    }
-
-    updatedScheduledTodoData.set(day, newCategoryList);
-    setScheduledTodoData(updatedScheduledTodoData);
-  };
-
   // event setting
   useEffect(() => {
     let newEvents = [];
@@ -220,86 +201,138 @@ function ScheduledTodo() {
   }, [scheduledTodoData]);
 
   return (
-    <div>
+    <>
       {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD")) &&
         sideSheetState.open && (
-          <SideSheet
+          <ScheduledTodoSideSheet
             isOpen={sideSheetState.open}
             onClose={closeSideSheet}
-            todo={
-              scheduledTodoData.get(moment(selectedDate).format("YYYYMMDD"))[
-                sideSheetState.categoryIndex
-              ].todoList[sideSheetState.todoIndex]
-            }
+            selectedDate={selectedDate}
+            categoryIndex={sideSheetState.categoryIndex}
+            todoIndex={sideSheetState.todoIndex}
           />
         )}
-      <h1>선택한 날짜: {moment(selectedDate).format("YYYYMMDD")}</h1>
-      <div>
-        {categoryList.map((categoryTag, categoryTagIndex) => (
-          <>
-            <li
-              key={categoryTagIndex}
-              onClick={() => handleCategoryClick(categoryTagIndex)}
-            >
-              {categoryTag.emoji + categoryTag.name + " +"}
-            </li>
+      <div className="flex">
+        <div className="w-1/2">
+          <h1>선택한 날짜: {moment(selectedDate).format("YYYYMMDD")}</h1>
+          {selectedCount === 0 ? (
+            <>
+              {categoryList.map((categoryTag, categoryTagIndex) => (
+                <>
+                  <li
+                    key={categoryTagIndex}
+                    onClick={() => handleCategoryClick(categoryTagIndex)}
+                  >
+                    {categoryTag.emoji + categoryTag.name + " +"}
+                  </li>
 
-            {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD"))
-              ? scheduledTodoData
-                  .get(moment(selectedDate).format("YYYYMMDD"))
-                  .map(
-                    (categoryData, categoryIndex) =>
-                      categoryData.category.name == categoryTag.name && (
-                        <ul key={categoryIndex}>
-                          {categoryData.todoList.map((todo, todoIndex) => (
-                            <li key={todoIndex}>
-                              <input
-                                type="checkbox"
-                                checked={todo.completed_at !== null}
-                                onChange={() =>
-                                  toggleCheck(
-                                    moment(selectedDate).format("YYYYMMDD"),
-                                    categoryIndex,
-                                    todoIndex
-                                  )
-                                }
-                              />
-                              <span
-                                onClick={() =>
-                                  openSideSheet(categoryIndex, todoIndex)
-                                }
-                              >
-                                {todo.name}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      )
+                  {scheduledTodoData.has(
+                    moment(selectedDate).format("YYYYMMDD")
                   )
-              : null}
-            {categoryTagIndex === focusedCategoryIndex ? (
-              <input
-                type="text"
-                placeholder="상시ToDo 추가"
-                value={newToDo}
-                onChange={handleInputChange}
-                onKeyDown={handleInputKeyPress(
-                  moment(selectedDate).format("YYYYMMDD"),
-                  categoryTagIndex
-                )}
-                onBlur={handleBlur}
-                autoFocus
-              />
-            ) : null}
-          </>
-        ))}
+                    ? scheduledTodoData
+                        .get(moment(selectedDate).format("YYYYMMDD"))
+                        .map(
+                          (categoryData, categoryIndex) =>
+                            categoryData.category.name === categoryTag.name && (
+                              <ul key={categoryIndex}>
+                                {categoryData.todoList.map(
+                                  (todo, todoIndex) => (
+                                    <ScheduledTodoItem
+                                      key={todoIndex}
+                                      selectedDate={selectedDate}
+                                      categoryIndex={categoryIndex}
+                                      todoIndex={todoIndex}
+                                      openSideSheet={openSideSheet}
+                                    />
+                                  )
+                                )}
+                              </ul>
+                            )
+                        )
+                    : null}
+                  {categoryTagIndex === focusedCategoryIndex ? (
+                    <input
+                      type="text"
+                      placeholder="ToDo 추가"
+                      value={newToDo}
+                      onChange={handleInputChange}
+                      onKeyDown={handleInputKeyPress(
+                        moment(selectedDate).format("YYYYMMDD"),
+                        categoryTagIndex
+                      )}
+                      onBlur={handleBlur}
+                      autoFocus
+                    />
+                  ) : null}
+                </>
+              ))}
+            </>
+          ) : (
+            <>
+              {categoryList.map(
+                (categoryTag, categoryTagIndex) =>
+                  categoryTag.selected && (
+                    <>
+                      <li
+                        key={categoryTagIndex}
+                        onClick={() => handleCategoryClick(categoryTagIndex)}
+                      >
+                        {categoryTag.emoji + categoryTag.name + " +"}
+                      </li>
+
+                      {scheduledTodoData.has(
+                        moment(selectedDate).format("YYYYMMDD")
+                      )
+                        ? scheduledTodoData
+                            .get(moment(selectedDate).format("YYYYMMDD"))
+                            .map(
+                              (categoryData, categoryIndex) =>
+                                categoryData.category.name ===
+                                  categoryTag.name && (
+                                  <ul key={categoryIndex}>
+                                    {categoryData.todoList.map(
+                                      (todo, todoIndex) => (
+                                        <ScheduledTodoItem
+                                          key={todoIndex}
+                                          selectedDate={selectedDate}
+                                          categoryIndex={categoryIndex}
+                                          todoIndex={todoIndex}
+                                          openSideSheet={openSideSheet}
+                                        />
+                                      )
+                                    )}
+                                  </ul>
+                                )
+                            )
+                        : null}
+                      {categoryTagIndex === focusedCategoryIndex ? (
+                        <input
+                          type="text"
+                          placeholder="ToDo 추가"
+                          value={newToDo}
+                          onChange={handleInputChange}
+                          onKeyDown={handleInputKeyPress(
+                            moment(selectedDate).format("YYYYMMDD"),
+                            categoryTagIndex
+                          )}
+                          onBlur={handleBlur}
+                          autoFocus
+                        />
+                      ) : null}
+                    </>
+                  )
+              )}
+            </>
+          )}
+        </div>
+        <CustomMonthView
+          className="w-1/2"
+          events={events}
+          selectedDate={selectedDate}
+          onDateClick={handleDateClick}
+        />
       </div>
-      <CustomMonthView
-        events={events}
-        selectedDate={selectedDate}
-        onDateClick={handleDateClick}
-      />
-    </div>
+    </>
   );
 }
 
