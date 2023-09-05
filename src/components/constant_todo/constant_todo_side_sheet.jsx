@@ -15,12 +15,12 @@ function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
       <div className={`${styles.content}`}>
         <h1>Todo 상세</h1>
         <div>
-          <ConstantTodoItem
-            categoryIndex={categoryIndex}
-            todoIndex={todoIndex}
-            openSideSheet={openSideSheet}
-          />
           <ul>
+            <ConstantTodoItem
+              categoryIndex={categoryIndex}
+              todoIndex={todoIndex}
+              openSideSheet={openSideSheet}
+            />
             {todo.subtodo_list.map((subtodo, subtodoIndex) => (
               <li key={subtodoIndex}>
                 <label>

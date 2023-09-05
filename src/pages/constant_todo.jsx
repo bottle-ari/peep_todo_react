@@ -49,11 +49,22 @@ function ConstantTodo() {
 
   const handleAddToDo = (categoryIndex) => {
     if (newToDo.trim() !== "") {
-      const updatedConstantTodoList = constantTodoList;
-      const currentCategory = updatedConstantTodoList[categoryIndex];
+      const category = categoryList[categoryIndex];
 
-      updatedConstantTodoList[categoryIndex].todoList = [
-        ...updatedConstantTodoList[categoryIndex].todoList,
+      const updatedConstantTodoList = constantTodoList;
+
+      let currentCategory;
+      let index;
+      updatedConstantTodoList.forEach((element, elementIndex) => {
+        if (element.category.id == category.id) {
+          currentCategory = element;
+          index = elementIndex;
+          return;
+        }
+      });
+
+      updatedConstantTodoList[index].todoList = [
+        ...updatedConstantTodoList[index].todoList,
         new TodoModel({
           category_id: currentCategory.category.id,
           reminder_id: null,

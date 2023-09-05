@@ -25,13 +25,13 @@ function ScheduledTodoSideSheet({
       <div className={`${styles.content}`}>
         <h1>Todo 상세</h1>
         <div>
-          <ScheduledTodoItem
-            selectedDate={selectedDate}
-            categoryIndex={categoryIndex}
-            todoIndex={todoIndex}
-            openSideSheet={openSideSheet}
-          />
           <ul>
+            <ScheduledTodoItem
+              selectedDate={selectedDate}
+              categoryIndex={categoryIndex}
+              todoIndex={todoIndex}
+              openSideSheet={openSideSheet}
+            />
             {todo.subtodo_list.map((subtodo, subtodoIndex) => (
               <li key={subtodoIndex}>
                 <label>

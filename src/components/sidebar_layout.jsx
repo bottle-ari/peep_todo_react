@@ -5,6 +5,16 @@ import { useCategoryContext } from "@/context/category_context";
 import CategoryModel from "@/data/data_classes/CategoryModel";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import CategoryItem from "./sidebar/category_item";
+import { ReactSortable } from "react-sortablejs";
+
+const sortableOptions = {
+  animation: 150,
+  fallbackOnBody: true,
+  swapThreshold: 0.65,
+  ghostClass: "ghost",
+  group: "shared",
+  forceFallback: true,
+};
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useCategoryContext();
@@ -88,11 +98,17 @@ function Sidebar() {
           </ul>
         </nav>
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
-        <ul>
+        <ReactSortable
+          tag={"ul"}
+          list={categoryList}
+          setList={setCategoryList}
+          {...sortableOptions}
+        >
           {categoryList.map((category, index) => (
             <CategoryItem key={index} categoryIndex={index} />
           ))}
-        </ul>
+        </ReactSortable>
+
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
         <div>
           <input
