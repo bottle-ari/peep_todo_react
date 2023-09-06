@@ -111,98 +111,52 @@ function ConstantTodo() {
       <div className="flex">
         <div className="w-1/2">
           <h1>상시 ToDo</h1>
-          {selectedCount === 0 ? (
-            <>
-              {categoryList.map((categoryTag, categoryTagIndex) => (
-                <>
-                  <li
-                    key={categoryTagIndex}
-                    onClick={() => handleCategoryClick(categoryTagIndex)}
-                  >
-                    {categoryTag.emoji + categoryTag.name + " +"}
-                  </li>
-
-                  {constantTodoList.map(
-                    (categoryData, categoryIndex) =>
-                      categoryData.category.name === categoryTag.name && (
-                        <ul key={categoryIndex}>
-                          {categoryData.todoList.map((todo, todoIndex) =>
-                            todo.completed_at === null ? (
-                              <ConstantTodoItem
-                                key={todoIndex}
-                                categoryIndex={categoryIndex}
-                                todoIndex={todoIndex}
-                                openSideSheet={openSideSheet}
-                              />
-                            ) : null
-                          )}
-                        </ul>
-                      )
-                  )}
-
-                  {categoryTagIndex === focusedCategoryIndex ? (
-                    <input
+          <>
+            {categoryList.map(
+              (categoryTag, categoryTagIndex) =>
+                (selectedCount === 0 || categoryTag.selected) && (
+                  <>
+                    <li
                       key={categoryTagIndex}
-                      type="text"
-                      placeholder="상시ToDo 추가"
-                      value={newToDo}
-                      onChange={handleInputChange}
-                      onKeyDown={handleInputKeyPress(categoryTagIndex)}
-                      onBlur={handleBlur}
-                      autoFocus
-                    />
-                  ) : null}
-                </>
-              ))}
-            </>
-          ) : (
-            <>
-              {categoryList.map(
-                (categoryTag, categoryTagIndex) =>
-                  categoryTag.selected && (
-                    <>
-                      <li
+                      onClick={() => handleCategoryClick(categoryTagIndex)}
+                    >
+                      {categoryTag.emoji + categoryTag.name + " +"}
+                    </li>
+
+                    {constantTodoList.map(
+                      (categoryData, categoryIndex) =>
+                        categoryData.category.name === categoryTag.name && (
+                          <ul key={categoryIndex}>
+                            {categoryData.todoList.map((todo, todoIndex) =>
+                              todo.completed_at === null ? (
+                                <ConstantTodoItem
+                                  key={todoIndex}
+                                  categoryIndex={categoryIndex}
+                                  todoIndex={todoIndex}
+                                  openSideSheet={openSideSheet}
+                                />
+                              ) : null
+                            )}
+                          </ul>
+                        )
+                    )}
+
+                    {categoryTagIndex === focusedCategoryIndex ? (
+                      <input
                         key={categoryTagIndex}
-                        onClick={() => handleCategoryClick(categoryTagIndex)}
-                      >
-                        {categoryTag.emoji + categoryTag.name + " +"}
-                      </li>
-
-                      {constantTodoList.map(
-                        (categoryData, categoryIndex) =>
-                          categoryData.category.name === categoryTag.name && (
-                            <ul key={categoryIndex}>
-                              {categoryData.todoList.map((todo, todoIndex) =>
-                                todo.completed_at === null ? (
-                                  <ConstantTodoItem
-                                    key={todoIndex}
-                                    categoryIndex={categoryIndex}
-                                    todoIndex={todoIndex}
-                                    openSideSheet={openSideSheet}
-                                  />
-                                ) : null
-                              )}
-                            </ul>
-                          )
-                      )}
-
-                      {categoryTagIndex === focusedCategoryIndex ? (
-                        <input
-                          key={categoryTagIndex}
-                          type="text"
-                          placeholder="상시ToDo 추가"
-                          value={newToDo}
-                          onChange={handleInputChange}
-                          onKeyDown={handleInputKeyPress(categoryTagIndex)}
-                          onBlur={handleBlur}
-                          autoFocus
-                        />
-                      ) : null}
-                    </>
-                  )
-              )}
-            </>
-          )}
+                        type="text"
+                        placeholder="상시ToDo 추가"
+                        value={newToDo}
+                        onChange={handleInputChange}
+                        onKeyDown={handleInputKeyPress(categoryTagIndex)}
+                        onBlur={handleBlur}
+                        autoFocus
+                      />
+                    ) : null}
+                  </>
+                )
+            )}
+          </>
         </div>
 
         <div className="w-1/2">
