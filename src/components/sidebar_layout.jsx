@@ -5,21 +5,30 @@ import { useCategoryContext } from "@/context/category_context";
 import CategoryModel from "@/data/data_classes/CategoryModel";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import CategoryItem from "./sidebar/category_item";
-import { ReactSortable } from "react-sortablejs";
-
-const sortableOptions = {
-  animation: 150,
-  fallbackOnBody: true,
-  swapThreshold: 0.65,
-  ghostClass: "ghost",
-  group: "shared",
-  forceFallback: true,
-};
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useCategoryContext();
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const [newCategoryName, setNewCategoryName] = useState("");
+
+  // --- Draggable이 Droppable로 드래그 되었을 때 실행되는 이벤트
+  const onDragEnd = ({ source, destination }) => {
+    if (!destination) return;
+
+    // 깊은 복사
+    //const _items = JSON.parse(JSON.stringify(items));
+    const _categoryList = [...categoryList];
+    // 기존 아이템 뽑아내기
+    const [targetItem] = _categoryList.splice(source.index, 1);
+    // 기존 아이템을 새로운 위치에 삽입하기
+    _categoryList.splice(destination.index, 0, targetItem);
+    // 상태 변경
+    setCategoryList(_categoryList);
+
+    console.log(">>> source", source);
+    console.log(">>> destination", destination);
+  };
 
   const handleAddCategory = () => {
     if (newCategoryName.trim() !== "") {
@@ -98,16 +107,37 @@ function Sidebar() {
           </ul>
         </nav>
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
-        <ReactSortable
-          tag={"ul"}
-          list={categoryList}
-          setList={setCategoryList}
-          {...sortableOptions}
-        >
-          {categoryList.map((category, index) => (
-            <CategoryItem key={index} categoryIndex={index} />
-          ))}
-        </ReactSortable>
+
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <div
+                className="categoryDroppable"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {categoryList.map((category, index) => (
+                  <Draggable
+                    key={category.id}
+                    draggableId={`category-${category.id}`}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <CategoryItem categoryIndex={index} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
         <hr style={{ borderTop: "1px solid #E2E2E2" }} />
         <div>
