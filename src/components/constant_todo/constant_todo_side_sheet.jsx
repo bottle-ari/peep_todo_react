@@ -5,12 +5,11 @@ import ConstantTodoItem from "./constant_todo_item";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import ConstantSubtodoItem from "./subtodo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import SideSheetTodoItem from "./sidesheet_todo_item";
 
 function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const todo = constantTodoList[categoryIndex].todoList[todoIndex];
-
-  const openSideSheet = (categoryIndex, todoIndex) => {};
 
   const onDragEnd =
     (categoryIndex, todoIndex) =>
@@ -45,10 +44,9 @@ function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
         <h1>Todo 상세</h1>
         <div>
           <ul>
-            <ConstantTodoItem
+            <SideSheetTodoItem
               categoryIndex={categoryIndex}
               todoIndex={todoIndex}
-              openSideSheet={openSideSheet}
             />
           </ul>
 

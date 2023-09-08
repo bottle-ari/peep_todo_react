@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 
-function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
+function SideSheetTodoItem({ categoryIndex, todoIndex }) {
+  // todo 객체 가져오기
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const todo = constantTodoList[categoryIndex].todoList[todoIndex];
   const color = constantTodoList[categoryIndex].category.color;
 
+  // toggle check
   const toggleCheck = () => {
     const updatedConstantTodoList = [...constantTodoList];
 
@@ -35,6 +37,28 @@ function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
     setConstantTodoList(updatedConstantTodoList);
   };
 
+  /* 클릭 시, subtodo name 수정 기능 */
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(todo.name);
+
+  const handleTextClick = () => {
+    setIsEditing(true);
+    setEditedText(todo.name);
+  };
+
+  const handleInputChange = (e) => {
+    setEditedText(e.target.value);
+  };
+
+  const handleSave = () => {
+    // 수정된 내용을 저장
+    const _constantTodoList = [...constantTodoList];
+    _constantTodoList[categoryIndex].todoList[todoIndex].name = editedText;
+    setConstantTodoList(_constantTodoList);
+    // 편집 모드를 종료
+    setIsEditing(false);
+  };
+
   return (
     <li>
       <div className="flex items-center">
@@ -51,18 +75,33 @@ function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
           </StyledCheckbox>
         </CheckboxWrapper>
 
-        <span
-          className="ml-2 text-lg"
-          onClick={() => openSideSheet(categoryIndex, todoIndex)}
-        >
-          {todo.name}
-        </span>
+        {isEditing ? (
+          // 편집 모드에서는 입력 필드를 표시합니다.
+          <input
+            className="ml-2"
+            type="text"
+            value={editedText}
+            onChange={handleInputChange}
+            onBlur={handleSave}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSave();
+              }
+            }}
+            autoFocus
+          />
+        ) : (
+          // 편집 모드가 아닐 때는 텍스트를 클릭 가능한 형태로 보여줍니다.
+          <span className="ml-2" onClick={handleTextClick}>
+            {todo.name}
+          </span>
+        )}
       </div>
     </li>
   );
 }
 
-export default ConstantTodoItem;
+export default SideSheetTodoItem;
 
 const CheckboxWrapper = styled.label`
   display: inline-block;

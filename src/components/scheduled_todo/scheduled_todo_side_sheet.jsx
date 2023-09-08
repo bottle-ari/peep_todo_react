@@ -6,6 +6,7 @@ import moment from "moment";
 import ScheduledTodoItem from "./scheduled_todo_item";
 import ScheduledSubtodoItem from "./subtodo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import SideSheetTodoItem from "./sidesheet_todo_item";
 
 function ScheduledTodoSideSheet({
   isOpen,
@@ -19,8 +20,6 @@ function ScheduledTodoSideSheet({
     moment(selectedDate).format("YYYYMMDD")
   )[categoryIndex];
   const todo = categoryData.todoList[todoIndex];
-
-  const openSideSheet = (categoryIndex, todoIndex) => {};
 
   const onDragEnd =
     (categoryIndex, todoIndex) =>
@@ -56,11 +55,10 @@ function ScheduledTodoSideSheet({
         <h1>Todo 상세</h1>
         <div>
           <ul>
-            <ScheduledTodoItem
+            <SideSheetTodoItem
               selectedDate={selectedDate}
               categoryIndex={categoryIndex}
               todoIndex={todoIndex}
-              openSideSheet={openSideSheet}
             />
           </ul>
 
