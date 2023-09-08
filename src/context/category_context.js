@@ -9,6 +9,26 @@ export const CategoryProvider = ({ children }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
 
+  useEffect(() => {
+    // GET 요청을 보낼 URL
+    const url = "https://peeptodo.com/api/categories/3";
+
+    // Fetch API를 사용한 GET 요청
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // JSON 형식의 응답 데이터를 파싱
+      })
+      .then((data) => {
+        console.log(data); // 응답 데이터를 처리
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
+
   // categoryList init from .json
   useEffect(() => {
     let initCategoryList = [];
