@@ -9,7 +9,6 @@ import TodoModel from "@/data/data_classes/TodoModel";
 import ConstantTodoSideSheet from "@/components/constant_todo/constant_todo_side_sheet";
 import ConstantTodoItem from "@/components/constant_todo/constant_todo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Sortable } from "react-sortablejs";
 
 function ConstantTodo() {
   const { categoryList } = useCategoryContext();
@@ -173,7 +172,7 @@ function ConstantTodo() {
                                   todo.completed_at === null ? (
                                     <Draggable
                                       key={todo.name}
-                                      draggableId={todo.name}
+                                      draggableId={`constant_todo-${todo.name}`}
                                       index={todoIndex}
                                     >
                                       {(provided) => (

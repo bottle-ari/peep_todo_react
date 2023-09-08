@@ -9,6 +9,7 @@ import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
 import ScheduledTodoSideSheet from "@/components/scheduled_todo/scheduled_todo_side_sheet";
 import ScheduledTodoItem from "@/components/scheduled_todo/scheduled_todo_item";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const localizer = momentLocalizer(moment);
 
@@ -49,6 +50,31 @@ function ScheduledTodo() {
     categoryIndex: -1,
     todoIndex: -1,
   });
+
+  // --- Draggable이 Droppable로 드래그 되었을 때 실행되는 이벤트
+  const onDragEnd =
+    (day, categoryIndex) =>
+    ({ source, destination }) => {
+      if (!destination) return;
+
+      // 깊은 복사
+      const _scheduledTodoData = new Map(scheduledTodoData);
+      const _categoryData = _scheduledTodoData.get(day)[categoryIndex];
+      // 기존 아이템 뽑아내기
+      const [targetItem] = _categoryData.todoList.splice(source.index, 1);
+      // 기존 아이템을 새로운 위치에 삽입하기
+      _categoryData.todoList.splice(destination.index, 0, targetItem);
+      _scheduledTodoData[categoryIndex] = _categoryData;
+      // 상태 변경
+      setScheduledTodoData(_scheduledTodoData);
+
+      console.log(">>> source", source);
+      console.log(">>> destination", destination);
+
+      // sideSheetState 의 띄워진 todo 계속 보여주도록
+      // sideSheetState.todoIndex 수정
+      // Todo : 차후에, todo 드래그 해서, 다른 카테고리로 옮길 수 있도록
+    };
 
   const openSideSheet = (categoryIndex, todoIndex) => {
     setSideSheetState({
@@ -234,24 +260,57 @@ function ScheduledTodo() {
                           .get(moment(selectedDate).format("YYYYMMDD"))
                           .map(
                             (categoryData, categoryIndex) =>
-                              categoryData.category.name ===
-                                categoryTag.name && (
-                                <ul key={categoryIndex}>
-                                  {categoryData.todoList.map(
-                                    (todo, todoIndex) => (
-                                      <ScheduledTodoItem
-                                        key={todoIndex}
-                                        selectedDate={selectedDate}
-                                        categoryIndex={categoryIndex}
-                                        todoIndex={todoIndex}
-                                        openSideSheet={openSideSheet}
-                                      />
-                                    )
+                              categoryData.category.id === categoryTag.id && (
+                                <DragDropContext
+                                  onDragEnd={onDragEnd(
+                                    moment(selectedDate).format("YYYYMMDD"),
+                                    categoryIndex
                                   )}
-                                </ul>
+                                >
+                                  <Droppable droppableId="droppable">
+                                    {(provided) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                      >
+                                        {categoryData.todoList.map(
+                                          (todo, todoIndex) => (
+                                            <Draggable
+                                              key={todo.name}
+                                              draggableId={`scheduled_todo-${todo.name}`}
+                                              index={todoIndex}
+                                            >
+                                              {(provided) => (
+                                                <ul
+                                                  ref={provided.innerRef}
+                                                  {...provided.draggableProps}
+                                                  {...provided.dragHandleProps}
+                                                >
+                                                  <ScheduledTodoItem
+                                                    key={todoIndex}
+                                                    selectedDate={selectedDate}
+                                                    categoryIndex={
+                                                      categoryIndex
+                                                    }
+                                                    todoIndex={todoIndex}
+                                                    openSideSheet={
+                                                      openSideSheet
+                                                    }
+                                                  />
+                                                </ul>
+                                              )}
+                                            </Draggable>
+                                          )
+                                        )}
+                                        {provided.placeholder}
+                                      </div>
+                                    )}
+                                  </Droppable>
+                                </DragDropContext>
                               )
                           )
                       : null}
+
                     {categoryTagIndex === focusedCategoryIndex ? (
                       <input
                         type="text"
