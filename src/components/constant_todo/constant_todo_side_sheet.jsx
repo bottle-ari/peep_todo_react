@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임포트
 import ConstantTodoItem from "./constant_todo_item";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
+import ConstantSubtodoItem from "./subtodo_item";
 
 function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
@@ -22,16 +23,11 @@ function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
               openSideSheet={openSideSheet}
             />
             {todo.subtodo_list.map((subtodo, subtodoIndex) => (
-              <li key={subtodoIndex}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={subtodo.check}
-                    //onChange={() => toggleCheck(subtodoIndex)}
-                  />
-                  {subtodo.subTodoName}
-                </label>
-              </li>
+              <ConstantSubtodoItem
+                categoryIndex={categoryIndex}
+                todoIndex={todoIndex}
+                subtodoIndex={subtodoIndex}
+              />
             ))}
           </ul>
           <p>category_id : {todo.category_id}</p>

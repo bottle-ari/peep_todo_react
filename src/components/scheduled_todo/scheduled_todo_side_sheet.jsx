@@ -4,6 +4,7 @@ import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import moment from "moment";
 import ScheduledTodoItem from "./scheduled_todo_item";
+import ScheduledSubtodoItem from "./subtodo_item";
 
 function ScheduledTodoSideSheet({
   isOpen,
@@ -33,16 +34,12 @@ function ScheduledTodoSideSheet({
               openSideSheet={openSideSheet}
             />
             {todo.subtodo_list.map((subtodo, subtodoIndex) => (
-              <li key={subtodoIndex}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={subtodo.check}
-                    //onChange={() => toggleCheck(subtodoIndex)}
-                  />
-                  {subtodo.subTodoName}
-                </label>
-              </li>
+              <ScheduledSubtodoItem
+                selectedDate={selectedDate}
+                categoryIndex={categoryIndex}
+                todoIndex={todoIndex}
+                subtodoIndex={subtodoIndex}
+              />
             ))}
           </ul>
           <p>category_id : {todo.category_id}</p>
