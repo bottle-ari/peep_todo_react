@@ -53,12 +53,6 @@ function LoginButtons() {
   return (
     <div>
       <span className="block">
-        <button>네이버 로그인</button>
-      </span>
-      <span className="block">
-        <button>카카오 로그인</button>
-      </span>
-      <span className="block">
         <button onClick={handleGoogleLogin}>구글 로그인</button>
       </span>
       <span className="block">
