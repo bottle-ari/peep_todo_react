@@ -3,14 +3,15 @@ import styled from "styled-components";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 
 function ConstantSubtodoItem({ categoryIndex, todoIndex, subtodoIndex }) {
+  // subtodo 객체 가져오기
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
-
   const color = constantTodoList[categoryIndex].category.color;
   const todo = constantTodoList[categoryIndex].todoList[todoIndex];
   const subtodoList = todo.subtodo_list;
   const subtodo = subtodoList[subtodoIndex];
 
-  const toggleCheck = (categoryIndex, todoIndex, subtodoIndex) => {
+  // toggle check
+  const toggleCheck = () => {
     const _constantTodoList = [...constantTodoList];
     const _subtodoList =
       _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list;
@@ -19,8 +20,33 @@ function ConstantSubtodoItem({ categoryIndex, todoIndex, subtodoIndex }) {
 
     _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list =
       subtodoList;
-
     setConstantTodoList(_constantTodoList);
+  };
+
+  /* 클릭 시, subtodo name 수정 기능 */
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(subtodo.subTodoName);
+
+  const handleTextClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInputChange = (e) => {
+    setEditedText(e.target.value);
+  };
+
+  const handleSave = () => {
+    // 수정된 내용을 저장
+    const _constantTodoList = [...constantTodoList];
+    const _subtodoList =
+      _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list;
+    _subtodoList[subtodoIndex].subTodoName = editedText;
+
+    _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list =
+      subtodoList;
+    setConstantTodoList(_constantTodoList);
+    // 편집 모드를 종료
+    setIsEditing(false);
   };
 
   return (
@@ -30,7 +56,7 @@ function ConstantSubtodoItem({ categoryIndex, todoIndex, subtodoIndex }) {
           <HiddenCheckbox
             type="checkbox"
             checked={subtodo.check}
-            onChange={() => toggleCheck(categoryIndex, todoIndex, subtodoIndex)}
+            onChange={toggleCheck}
           />
           <StyledCheckbox color={color} checked={subtodo.check}>
             <Icon viewBox="0 0 18 18">
@@ -39,7 +65,27 @@ function ConstantSubtodoItem({ categoryIndex, todoIndex, subtodoIndex }) {
           </StyledCheckbox>
         </CheckboxWrapper>
 
-        <span className="ml-2">{subtodo.subTodoName}</span>
+        {isEditing ? (
+          // 편집 모드에서는 입력 필드를 표시합니다.
+          <input
+            className="ml-2"
+            type="text"
+            value={editedText}
+            onChange={handleInputChange}
+            onBlur={handleSave}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSave();
+              }
+            }}
+            autoFocus
+          />
+        ) : (
+          // 편집 모드가 아닐 때는 텍스트를 클릭 가능한 형태로 보여줍니다.
+          <span className="ml-2" onClick={handleTextClick}>
+            {subtodo.subTodoName}
+          </span>
+        )}
       </div>
     </li>
   );
