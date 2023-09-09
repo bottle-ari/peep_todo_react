@@ -1,7 +1,6 @@
 // SideSheet.jsx
 import React, { useState } from "react";
 import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임포트
-import TodoItem from "./todo_item";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import SideSheetSubtodoItem from "./sidesheet_subtodo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -11,6 +10,7 @@ function SideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const todo = constantTodoList[categoryIndex].todoList[todoIndex];
 
+  /* Sub Todo 끼리, 순서 변경 */
   const onDragEnd =
     (categoryIndex, todoIndex) =>
     ({ source, destination }) => {
@@ -32,11 +32,43 @@ function SideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
 
       console.log(">>> source", source);
       console.log(">>> destination", destination);
-
-      // sideSheetState 의 띄워진 todo 계속 보여주도록
-      // sideSheetState.todoIndex 수정
-      // Todo : 차후에, todo 드래그 해서, 다른 카테고리로 옮길 수 있도록
     };
+
+  /* Sub todo 추가 */
+  const [newSubtodoName, setNewSubtodoName] = useState("");
+
+  const handleAddSubtodo = () => {
+    if (newSubtodoName.trim() !== "") {
+      const newSubtodo = {
+        subTodoName: newSubtodoName,
+        check: false,
+      };
+
+      // 깊은 복사
+      const _constantTodoList = [...constantTodoList];
+      let _subtodoList =
+        _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list;
+
+      _subtodoList = [...todo.subtodo_list, newSubtodo];
+
+      _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list =
+        _subtodoList;
+      // 상태 변경
+      setConstantTodoList(_constantTodoList);
+
+      setNewSubtodoName("");
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setNewSubtodoName(event.target.value);
+  };
+
+  const handleInputKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleAddSubtodo();
+    }
+  };
 
   return (
     <div className={`${styles["side-sheet"]} ${isOpen ? styles.open : ""}`}>
@@ -80,6 +112,17 @@ function SideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
               )}
             </Droppable>
           </DragDropContext>
+
+          <div>
+            <input
+              style={{ width: "219px" }}
+              type="text"
+              placeholder="Subtodo 추가"
+              value={newSubtodoName}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyPress}
+            />
+          </div>
 
           <p>category_id : {todo.category_id}</p>
           <p>reminder_id : {todo.reminder_id}</p>

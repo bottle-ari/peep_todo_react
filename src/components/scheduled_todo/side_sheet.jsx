@@ -19,13 +19,13 @@ function SideSheet({
     moment(selectedDate).format("YYYYMMDD")
   )[categoryIndex];
   const todo = categoryData.todoList[todoIndex];
+  const day = moment(selectedDate).format("YYYYMMDD");
 
+  /* Sub Todo 끼리, 순서 변경 */
   const onDragEnd =
     (categoryIndex, todoIndex) =>
     ({ source, destination }) => {
       if (!destination) return;
-
-      const day = moment(selectedDate).format("YYYYMMDD");
 
       // 깊은 복사
       const updatedScheduledTodoData = new Map(scheduledTodoData);
@@ -47,6 +47,43 @@ function SideSheet({
       console.log(">>> source", source);
       console.log(">>> destination", destination);
     };
+
+  /* Sub todo 추가 */
+  const [newSubtodoName, setNewSubtodoName] = useState("");
+
+  const handleAddSubtodo = () => {
+    if (newSubtodoName.trim() !== "") {
+      const newSubtodo = {
+        subTodoName: newSubtodoName,
+        check: false,
+      };
+      // 깊은 복사
+      const updatedScheduledTodoData = new Map(scheduledTodoData);
+      const newCategoryList = [...updatedScheduledTodoData.get(day)];
+      let _subtodoList =
+        newCategoryList[categoryIndex].todoList[todoIndex].subtodo_list;
+
+      _subtodoList = [...todo.subtodo_list, newSubtodo];
+
+      newCategoryList[categoryIndex].todoList[todoIndex].subtodo_list =
+        _subtodoList;
+      // 상태 변경
+      updatedScheduledTodoData.set(day, newCategoryList);
+      setScheduledTodoData(updatedScheduledTodoData);
+
+      setNewSubtodoName("");
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setNewSubtodoName(event.target.value);
+  };
+
+  const handleInputKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleAddSubtodo();
+    }
+  };
 
   return (
     <div className={`${styles["side-sheet"]} ${isOpen ? styles.open : ""}`}>
@@ -92,6 +129,17 @@ function SideSheet({
               )}
             </Droppable>
           </DragDropContext>
+
+          <div>
+            <input
+              style={{ width: "219px" }}
+              type="text"
+              placeholder="Subtodo 추가"
+              value={newSubtodoName}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyPress}
+            />
+          </div>
 
           <p>category_id : {todo.category_id}</p>
           <p>reminder_id : {todo.reminder_id}</p>
