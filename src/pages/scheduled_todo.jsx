@@ -1,41 +1,15 @@
 // ScheduledToDo.jsx
 import React, { useContext, useState, useEffect } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import MainLayout from "@/components/main_layout";
 import { useCategoryContext } from "@/context/category_context";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
-import ScheduledTodoSideSheet from "@/components/scheduled_todo/scheduled_todo_side_sheet";
-import ScheduledTodoItem from "@/components/scheduled_todo/scheduled_todo_item";
+import SideSheet from "@/components/scheduled_todo/side_sheet";
+import TodoItem from "@/components/scheduled_todo/todo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-
-const localizer = momentLocalizer(moment);
-
-function CustomMonthView({ events, selectedDate, onDateClick }) {
-  const eventStyleGetter = (event) => {
-    if (selectedDate && moment(event.start).isSame(selectedDate, "day")) {
-      return { className: "selected-date" };
-    }
-    return {};
-  };
-
-  return (
-    <Calendar
-      localizer={localizer}
-      events={events}
-      views={["month"]}
-      defaultView="month"
-      selectable
-      onSelectSlot={(slotInfo) => onDateClick(slotInfo.start)}
-      eventPropGetter={eventStyleGetter}
-      startAccessor="start"
-      endAccessor="end"
-      style={{ height: 500 }}
-    />
-  );
-}
+import CustomMonthView from "@/components/scheduled_todo/calendar";
 
 function ScheduledTodo() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -230,7 +204,7 @@ function ScheduledTodo() {
     <>
       {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD")) &&
         sideSheetState.open && (
-          <ScheduledTodoSideSheet
+          <SideSheet
             isOpen={sideSheetState.open}
             onClose={closeSideSheet}
             selectedDate={selectedDate}
@@ -286,7 +260,7 @@ function ScheduledTodo() {
                                                   {...provided.draggableProps}
                                                   {...provided.dragHandleProps}
                                                 >
-                                                  <ScheduledTodoItem
+                                                  <TodoItem
                                                     key={todoIndex}
                                                     selectedDate={selectedDate}
                                                     categoryIndex={

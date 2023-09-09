@@ -6,8 +6,8 @@ import MainLayout from "../components/main_layout";
 import { useCategoryContext } from "@/context/category_context";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
-import ConstantTodoSideSheet from "@/components/constant_todo/constant_todo_side_sheet";
-import ConstantTodoItem from "@/components/constant_todo/constant_todo_item";
+import SideSheet from "@/components/constant_todo/side_sheet";
+import TodoItem from "@/components/constant_todo/todo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function ConstantTodo() {
@@ -128,7 +128,7 @@ function ConstantTodo() {
   return (
     <>
       {constantTodoList.length > 0 && sideSheetState.open && (
-        <ConstantTodoSideSheet
+        <SideSheet
           isOpen={sideSheetState.open}
           onClose={closeSideSheet}
           todo={
@@ -181,7 +181,7 @@ function ConstantTodo() {
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
                                         >
-                                          <ConstantTodoItem
+                                          <TodoItem
                                             key={todoIndex}
                                             categoryIndex={categoryIndex}
                                             todoIndex={todoIndex}
@@ -253,7 +253,7 @@ function ConstantTodo() {
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
                                         >
-                                          <ConstantTodoItem
+                                          <TodoItem
                                             key={todoIndex}
                                             categoryIndex={categoryIndex}
                                             todoIndex={todoIndex}
@@ -293,7 +293,7 @@ function ConstantTodo() {
                             <ul key={categoryIndex}>
                               {categoryData.todoList.map((todo, todoIndex) =>
                                 todo.completed_at !== null ? (
-                                  <ConstantTodoItem
+                                  <TodoItem
                                     key={todoIndex}
                                     categoryIndex={categoryIndex}
                                     todoIndex={todoIndex}

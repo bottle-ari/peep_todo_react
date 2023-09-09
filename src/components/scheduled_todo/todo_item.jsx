@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import moment from "moment";
+import SubtodoItem from "./subtodo_item";
 
-function ScheduledTodoItem({
-  selectedDate,
-  categoryIndex,
-  todoIndex,
-  openSideSheet,
-}) {
+function TodoItem({ selectedDate, categoryIndex, todoIndex, openSideSheet }) {
   // todo 객체 가져오기
   const { scheduledTodoData, setScheduledTodoData } = useScheduledTodoContext();
   const categoryData = scheduledTodoData.get(
@@ -40,6 +36,14 @@ function ScheduledTodoItem({
     setScheduledTodoData(updatedScheduledTodoData);
   };
 
+  /* Sub Todo 보이기 & 숨기기 */
+  const [subtodoHide, setSubtodoHide] = useState(false);
+
+  const handleHide = () => {
+    const _subtodoHide = subtodoHide;
+    setSubtodoHide(!_subtodoHide);
+  };
+
   return (
     <li>
       <div className="flex items-center">
@@ -62,12 +66,28 @@ function ScheduledTodoItem({
         >
           {todo.name}
         </span>
+
+        <span className="ml-5" onClick={handleHide}>
+          v
+        </span>
       </div>
+      {subtodoHide === false && (
+        <li className="ml-8">
+          {todo.subtodo_list.map((subtodo, subtodoIndex) => (
+            <SubtodoItem
+              selectedDate={selectedDate}
+              categoryIndex={categoryIndex}
+              todoIndex={todoIndex}
+              subtodoIndex={subtodoIndex}
+            />
+          ))}
+        </li>
+      )}
     </li>
   );
 }
 
-export default ScheduledTodoItem;
+export default TodoItem;
 
 const CheckboxWrapper = styled.label`
   display: inline-block;

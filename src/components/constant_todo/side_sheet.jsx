@@ -1,13 +1,13 @@
 // SideSheet.jsx
 import React, { useState } from "react";
 import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임포트
-import ConstantTodoItem from "./constant_todo_item";
+import TodoItem from "./todo_item";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
-import ConstantSubtodoItem from "./subtodo_item";
+import SideSheetSubtodoItem from "./sidesheet_subtodo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import SideSheetTodoItem from "./sidesheet_todo_item";
 
-function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
+function SideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const todo = constantTodoList[categoryIndex].todoList[todoIndex];
 
@@ -66,7 +66,7 @@ function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ConstantSubtodoItem
+                          <SideSheetSubtodoItem
                             categoryIndex={categoryIndex}
                             todoIndex={todoIndex}
                             subtodoIndex={subtodoIndex}
@@ -95,4 +95,4 @@ function ConstantTodoSideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
   );
 }
 
-export default ConstantTodoSideSheet;
+export default SideSheet;

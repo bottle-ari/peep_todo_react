@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import styles from "../../styles/SideSheet.module.css"; // module.css 파일 임포트
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import moment from "moment";
-import ScheduledTodoItem from "./scheduled_todo_item";
-import ScheduledSubtodoItem from "./subtodo_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import SideSheetTodoItem from "./sidesheet_todo_item";
+import SideSheetSubtodoItem from "./sidesheet_subtodo_item";
 
-function ScheduledTodoSideSheet({
+function SideSheet({
   isOpen,
   onClose,
   selectedDate,
@@ -78,7 +77,7 @@ function ScheduledTodoSideSheet({
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ScheduledSubtodoItem
+                          <SideSheetSubtodoItem
                             selectedDate={selectedDate}
                             categoryIndex={categoryIndex}
                             todoIndex={todoIndex}
@@ -108,4 +107,4 @@ function ScheduledTodoSideSheet({
   );
 }
 
-export default ScheduledTodoSideSheet;
+export default SideSheet;
