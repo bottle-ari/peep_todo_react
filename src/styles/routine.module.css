@@ -1,0 +1,60 @@
+/* routine.module.css */
+
+.container {
+  display: flex;
+  height: 100%; /* 컨테이너의 높이를 100%로 설정하여 최소치가 정해져있도록 합니다. */
+}
+
+.leftBox,
+.rightBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* 세로로 아이템을 쌓기 위해 컨테이너의 방향을 설정합니다. */
+  min-height: 100vh; /* 최소치로 설정하려면 원하는 최소 높이 값을 지정하세요. */
+  padding: 20px;
+  background-color: aqua;
+}
+
+.draggable-list {
+  width: 320px; /* 고정된 너비 설정 */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.draggable-list.leftBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* 세로로 아이템을 쌓기 위해 컨테이너의 방향을 설정합니다. */
+  min-height: 100vh; /* 최소치로 설정하려면 원하는 최소 높이 값을 지정하세요. */
+  padding: 20px;
+  background-color: red;
+}
+.draggable-list.rightBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* 세로로 아이템을 쌓기 위해 컨테이너의 방향을 설정합니다. */
+  min-height: 100vh; /* 최소치로 설정하려면 원하는 최소 높이 값을 지정하세요. */
+  padding: 20px;
+  background-color: aqua;
+}
+
+.draggable-list li {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  cursor: grab;
+  width: 100%;
+}
+
+.draggable-list-item {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 5px 0;
+  border: 10px solid #ccc;
+  cursor: move;
+  cursor: -webkit-grabbing;
+  font-size: 24px;
+  width: 320px; /*아이템 리스트 고정 크기*/
+}
