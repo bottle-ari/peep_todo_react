@@ -1,40 +1,15 @@
 // ScheduledToDo.jsx
 import React, { useContext, useState, useEffect } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import MainLayout from "@/components/main_layout";
 import { useCategoryContext } from "@/context/category_context";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import TodoModel from "@/data/data_classes/TodoModel";
-import ScheduledTodoSideSheet from "@/components/scheduled_todo/scheduled_todo_side_sheet";
-import ScheduledTodoItem from "@/components/scheduled_todo/scheduled_todo_item";
-
-const localizer = momentLocalizer(moment);
-
-function CustomMonthView({ events, selectedDate, onDateClick }) {
-  const eventStyleGetter = (event) => {
-    if (selectedDate && moment(event.start).isSame(selectedDate, "day")) {
-      return { className: "selected-date" };
-    }
-    return {};
-  };
-
-  return (
-    <Calendar
-      localizer={localizer}
-      events={events}
-      views={["month"]}
-      defaultView="month"
-      selectable
-      onSelectSlot={(slotInfo) => onDateClick(slotInfo.start)}
-      eventPropGetter={eventStyleGetter}
-      startAccessor="start"
-      endAccessor="end"
-      style={{ height: 500 }}
-    />
-  );
-}
+import SideSheet from "@/components/scheduled_todo/side_sheet";
+import TodoItem from "@/components/scheduled_todo/todo_item";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import CustomMonthView from "@/components/scheduled_todo/calendar";
 
 function ScheduledTodo() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -49,6 +24,31 @@ function ScheduledTodo() {
     categoryIndex: -1,
     todoIndex: -1,
   });
+
+  // --- Draggable이 Droppable로 드래그 되었을 때 실행되는 이벤트
+  const onDragEnd =
+    (day, categoryIndex) =>
+    ({ source, destination }) => {
+      if (!destination) return;
+
+      // 깊은 복사
+      const _scheduledTodoData = new Map(scheduledTodoData);
+      const _categoryData = _scheduledTodoData.get(day)[categoryIndex];
+      // 기존 아이템 뽑아내기
+      const [targetItem] = _categoryData.todoList.splice(source.index, 1);
+      // 기존 아이템을 새로운 위치에 삽입하기
+      _categoryData.todoList.splice(destination.index, 0, targetItem);
+      _scheduledTodoData[categoryIndex] = _categoryData;
+      // 상태 변경
+      setScheduledTodoData(_scheduledTodoData);
+
+      console.log(">>> source", source);
+      console.log(">>> destination", destination);
+
+      // sideSheetState 의 띄워진 todo 계속 보여주도록
+      // sideSheetState.todoIndex 수정
+      // Todo : 차후에, todo 드래그 해서, 다른 카테고리로 옮길 수 있도록
+    };
 
   const openSideSheet = (categoryIndex, todoIndex) => {
     setSideSheetState({
@@ -204,7 +204,7 @@ function ScheduledTodo() {
     <>
       {scheduledTodoData.has(moment(selectedDate).format("YYYYMMDD")) &&
         sideSheetState.open && (
-          <ScheduledTodoSideSheet
+          <SideSheet
             isOpen={sideSheetState.open}
             onClose={closeSideSheet}
             selectedDate={selectedDate}
@@ -215,115 +215,95 @@ function ScheduledTodo() {
       <div className="flex">
         <div className="w-1/2">
           <h1>선택한 날짜: {moment(selectedDate).format("YYYYMMDD")}</h1>
-          {selectedCount === 0 ? (
-            <>
-              {categoryList.map((categoryTag, categoryTagIndex) => (
-                <>
-                  <li
-                    key={categoryTagIndex}
-                    onClick={() => handleCategoryClick(categoryTagIndex)}
-                  >
-                    {categoryTag.emoji + categoryTag.name + " +"}
-                  </li>
+          <>
+            {categoryList.map(
+              (categoryTag, categoryTagIndex) =>
+                (selectedCount === 0 || categoryTag.selected) && (
+                  <>
+                    <li
+                      key={categoryTagIndex}
+                      onClick={() => handleCategoryClick(categoryTagIndex)}
+                    >
+                      {categoryTag.emoji + categoryTag.name + " +"}
+                    </li>
 
-                  {scheduledTodoData.has(
-                    moment(selectedDate).format("YYYYMMDD")
-                  )
-                    ? scheduledTodoData
-                        .get(moment(selectedDate).format("YYYYMMDD"))
-                        .map(
-                          (categoryData, categoryIndex) =>
-                            categoryData.category.name === categoryTag.name && (
-                              <ul key={categoryIndex}>
-                                {categoryData.todoList.map(
-                                  (todo, todoIndex) => (
-                                    <ScheduledTodoItem
-                                      key={todoIndex}
-                                      selectedDate={selectedDate}
-                                      categoryIndex={categoryIndex}
-                                      todoIndex={todoIndex}
-                                      openSideSheet={openSideSheet}
-                                    />
-                                  )
-                                )}
-                              </ul>
-                            )
-                        )
-                    : null}
-                  {categoryTagIndex === focusedCategoryIndex ? (
-                    <input
-                      type="text"
-                      placeholder="ToDo 추가"
-                      value={newToDo}
-                      onChange={handleInputChange}
-                      onKeyDown={handleInputKeyPress(
-                        moment(selectedDate).format("YYYYMMDD"),
-                        categoryTagIndex
-                      )}
-                      onBlur={handleBlur}
-                      autoFocus
-                    />
-                  ) : null}
-                </>
-              ))}
-            </>
-          ) : (
-            <>
-              {categoryList.map(
-                (categoryTag, categoryTagIndex) =>
-                  categoryTag.selected && (
-                    <>
-                      <li
-                        key={categoryTagIndex}
-                        onClick={() => handleCategoryClick(categoryTagIndex)}
-                      >
-                        {categoryTag.emoji + categoryTag.name + " +"}
-                      </li>
-
-                      {scheduledTodoData.has(
-                        moment(selectedDate).format("YYYYMMDD")
-                      )
-                        ? scheduledTodoData
-                            .get(moment(selectedDate).format("YYYYMMDD"))
-                            .map(
-                              (categoryData, categoryIndex) =>
-                                categoryData.category.name ===
-                                  categoryTag.name && (
-                                  <ul key={categoryIndex}>
-                                    {categoryData.todoList.map(
-                                      (todo, todoIndex) => (
-                                        <ScheduledTodoItem
-                                          key={todoIndex}
-                                          selectedDate={selectedDate}
-                                          categoryIndex={categoryIndex}
-                                          todoIndex={todoIndex}
-                                          openSideSheet={openSideSheet}
-                                        />
-                                      )
+                    {scheduledTodoData.has(
+                      moment(selectedDate).format("YYYYMMDD")
+                    )
+                      ? scheduledTodoData
+                          .get(moment(selectedDate).format("YYYYMMDD"))
+                          .map(
+                            (categoryData, categoryIndex) =>
+                              categoryData.category.id === categoryTag.id && (
+                                <DragDropContext
+                                  key={categoryIndex}
+                                  onDragEnd={onDragEnd(
+                                    moment(selectedDate).format("YYYYMMDD"),
+                                    categoryIndex
+                                  )}
+                                >
+                                  <Droppable droppableId="droppable">
+                                    {(provided) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                      >
+                                        {categoryData.todoList.map(
+                                          (todo, todoIndex) => (
+                                            <Draggable
+                                              key={todo.name}
+                                              draggableId={`scheduled_todo-${todo.name}`}
+                                              index={todoIndex}
+                                            >
+                                              {(provided) => (
+                                                <ul
+                                                  ref={provided.innerRef}
+                                                  {...provided.draggableProps}
+                                                  {...provided.dragHandleProps}
+                                                >
+                                                  <TodoItem
+                                                    key={todoIndex}
+                                                    selectedDate={selectedDate}
+                                                    categoryIndex={
+                                                      categoryIndex
+                                                    }
+                                                    todoIndex={todoIndex}
+                                                    openSideSheet={
+                                                      openSideSheet
+                                                    }
+                                                  />
+                                                </ul>
+                                              )}
+                                            </Draggable>
+                                          )
+                                        )}
+                                        {provided.placeholder}
+                                      </div>
                                     )}
-                                  </ul>
-                                )
-                            )
-                        : null}
-                      {categoryTagIndex === focusedCategoryIndex ? (
-                        <input
-                          type="text"
-                          placeholder="ToDo 추가"
-                          value={newToDo}
-                          onChange={handleInputChange}
-                          onKeyDown={handleInputKeyPress(
-                            moment(selectedDate).format("YYYYMMDD"),
-                            categoryTagIndex
-                          )}
-                          onBlur={handleBlur}
-                          autoFocus
-                        />
-                      ) : null}
-                    </>
-                  )
-              )}
-            </>
-          )}
+                                  </Droppable>
+                                </DragDropContext>
+                              )
+                          )
+                      : null}
+
+                    {categoryTagIndex === focusedCategoryIndex ? (
+                      <input
+                        type="text"
+                        placeholder="ToDo 추가"
+                        value={newToDo}
+                        onChange={handleInputChange}
+                        onKeyDown={handleInputKeyPress(
+                          moment(selectedDate).format("YYYYMMDD"),
+                          categoryTagIndex
+                        )}
+                        onBlur={handleBlur}
+                        autoFocus
+                      />
+                    ) : null}
+                  </>
+                )
+            )}
+          </>
         </div>
         <CustomMonthView
           className="w-1/2"
