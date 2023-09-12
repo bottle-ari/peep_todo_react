@@ -75,6 +75,7 @@ function TodoItem({ selectedDate, categoryIndex, todoIndex, openSideSheet }) {
         <li className="ml-8">
           {todo.subtodo_list.map((subtodo, subtodoIndex) => (
             <SubtodoItem
+              key={subtodoIndex}
               selectedDate={selectedDate}
               categoryIndex={categoryIndex}
               todoIndex={todoIndex}
