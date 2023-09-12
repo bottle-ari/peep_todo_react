@@ -85,6 +85,22 @@ function SideSheet({
     }
   };
 
+  /* Todo delete */
+  const onDelete = () => {
+    // 깊은 복사
+    const updatedScheduledTodoData = new Map(scheduledTodoData);
+    const newCategoryList = [...updatedScheduledTodoData.get(day)];
+    let _todoList = newCategoryList[categoryIndex].todoList;
+
+    _todoList.splice(todoIndex, 1);
+
+    newCategoryList[categoryIndex].todoList = _todoList;
+    // 상태 변경
+    updatedScheduledTodoData.set(day, newCategoryList);
+    setScheduledTodoData(updatedScheduledTodoData);
+    onClose();
+  };
+
   return (
     <div className={`${styles["side-sheet"]} ${isOpen ? styles.open : ""}`}>
       <div className={`${styles.content}`}>
@@ -149,6 +165,7 @@ function SideSheet({
           <p>memo : {todo.memo}</p>
           <p>order : {todo.order}</p>
         </div>
+        <button onClick={onDelete}>delete</button>
         <button onClick={onClose}>Close</button>
       </div>
     </div>

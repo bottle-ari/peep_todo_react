@@ -18,10 +18,10 @@ function SideSheetSubtodoItem({
   const todo = categoryData.todoList[todoIndex];
   const subtodoList = todo.subtodo_list;
   const subtodo = subtodoList[subtodoIndex];
+  const day = moment(selectedDate).format("YYYYMMDD");
 
   // toggle check
   const toggleCheck = () => {
-    const day = moment(selectedDate).format("YYYYMMDD");
     const updatedScheduledTodoData = new Map(scheduledTodoData);
     const newCategoryList = [...updatedScheduledTodoData.get(day)];
 
@@ -50,7 +50,6 @@ function SideSheetSubtodoItem({
 
   const handleSave = () => {
     // 수정된 내용을 저장
-    const day = moment(selectedDate).format("YYYYMMDD");
     const updatedScheduledTodoData = new Map(scheduledTodoData);
     const newCategoryList = [...updatedScheduledTodoData.get(day)];
 
@@ -62,6 +61,23 @@ function SideSheetSubtodoItem({
     setScheduledTodoData(updatedScheduledTodoData);
     // 편집 모드를 종료
     setIsEditing(false);
+  };
+
+  /* X 버튼 클릭 시, delete 기능 */
+  const handleDelete = () => {
+    // 수정된 내용을 저장
+    const updatedScheduledTodoData = new Map(scheduledTodoData);
+    const newCategoryList = [...updatedScheduledTodoData.get(day)];
+    const _subtodoList =
+      newCategoryList[categoryIndex].todoList[todoIndex].subtodo_list;
+
+    _subtodoList.splice(subtodoIndex, 1);
+
+    newCategoryList[categoryIndex].todoList[todoIndex].subtodo_list =
+      _subtodoList;
+
+    updatedScheduledTodoData.set(day, newCategoryList);
+    setScheduledTodoData(updatedScheduledTodoData);
   };
 
   return (
@@ -96,9 +112,10 @@ function SideSheetSubtodoItem({
           />
         ) : (
           // 편집 모드가 아닐 때는 텍스트를 클릭 가능한 형태로 보여줍니다.
-          <span className="ml-2" onClick={handleTextClick}>
-            {subtodo.subTodoName}
-          </span>
+          <div className="ml-2 space-x-10">
+            <span onClick={handleTextClick}>{subtodo.subTodoName}</span>
+            <span onClick={handleDelete}>X</span>
+          </div>
         )}
       </div>
     </li>

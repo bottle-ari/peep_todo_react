@@ -49,6 +49,19 @@ function SideSheetSubtodoItem({ categoryIndex, todoIndex, subtodoIndex }) {
     setIsEditing(false);
   };
 
+  /* X 버튼 클릭 시, delete 기능 */
+  const handleDelete = () => {
+    const _constantTodoList = [...constantTodoList];
+    const _subtodoList =
+      _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list;
+
+    _subtodoList.splice(subtodoIndex, 1);
+
+    _constantTodoList[categoryIndex].todoList[todoIndex].subtodo_list =
+      subtodoList;
+    setConstantTodoList(_constantTodoList);
+  };
+
   return (
     <li>
       <div className="flex items-center">
@@ -82,9 +95,10 @@ function SideSheetSubtodoItem({ categoryIndex, todoIndex, subtodoIndex }) {
           />
         ) : (
           // 편집 모드가 아닐 때는 텍스트를 클릭 가능한 형태로 보여줍니다.
-          <span className="ml-2" onClick={handleTextClick}>
-            {subtodo.subTodoName}
-          </span>
+          <div className="ml-2 space-x-10">
+            <span onClick={handleTextClick}>{subtodo.subTodoName}</span>
+            <span onClick={handleDelete}>X</span>
+          </div>
         )}
       </div>
     </li>
