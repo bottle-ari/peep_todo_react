@@ -70,6 +70,20 @@ function SideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
     }
   };
 
+  /* Todo delete */
+  const onDelete = () => {
+    // 깊은 복사
+    const _constantTodoList = [...constantTodoList];
+    let _todoList = _constantTodoList[categoryIndex].todoList;
+
+    _todoList.splice(todoIndex, 1);
+
+    _constantTodoList[categoryIndex].todoList = _todoList;
+    // 상태 변경
+    setConstantTodoList(_constantTodoList);
+    onClose();
+  };
+
   return (
     <div className={`${styles["side-sheet"]} ${isOpen ? styles.open : ""}`}>
       <div className={`${styles.content}`}>
@@ -132,6 +146,7 @@ function SideSheet({ isOpen, onClose, categoryIndex, todoIndex }) {
           <p>memo : {todo.memo}</p>
           <p>order : {todo.order}</p>
         </div>
+        <button onClick={onDelete}>delete</button>
         <button onClick={onClose}>Close</button>
       </div>
     </div>
