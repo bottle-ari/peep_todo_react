@@ -236,6 +236,7 @@ function ScheduledTodo() {
                             (categoryData, categoryIndex) =>
                               categoryData.category.id === categoryTag.id && (
                                 <DragDropContext
+                                  key={categoryIndex}
                                   onDragEnd={onDragEnd(
                                     moment(selectedDate).format("YYYYMMDD"),
                                     categoryIndex

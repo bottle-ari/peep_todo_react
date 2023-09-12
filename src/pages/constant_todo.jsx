@@ -159,6 +159,7 @@ function ConstantTodo() {
                     (categoryData, categoryIndex) =>
                       categoryData.category.id === categoryTag.id && (
                         <DragDropContext
+                          key={categoryIndex}
                           onDragStart={onDragStart}
                           onDragEnd={onDragEnd(categoryIndex)}
                         >
@@ -233,7 +234,10 @@ function ConstantTodo() {
                   {constantTodoList.map(
                     (categoryData, categoryIndex) =>
                       categoryData.category.id === categoryTag.id && (
-                        <DragDropContext onDragEnd={onDragEnd(categoryIndex)}>
+                        <DragDropContext
+                          key={categoryIndex}
+                          onDragEnd={onDragEnd(categoryIndex)}
+                        >
                           <Droppable droppableId="droppable">
                             {(provided) => (
                               <div
