@@ -1,22 +1,49 @@
 // src/pages/Routine.jsx
 
 import MainLayout from "@/components/main_layout";
-import React from "react";
-import FlyingPeep from "../components/peep_animation";
-import { useRoutineContext } from "@/context/routine_context";
+import React, { useState } from "react";
+import DraggableList from "@/components/routine/draggablelist";
+import styles from "@/styles/routine.module.css";
+import RoutineSideSheet from "@/components/routine/routine_side_sheet";
+import { datetime, RRule, RRuleSet, rrulestr } from "rrule";
+
 function Routine() {
-  const { routineList, setRoutineList } = useRoutineContext();
+  const [selectedRoutineIndex, setSelectedRoutineIndex] = useState(-1);
+
+  const rule = (interval) =>
+    new RRule({
+      freq: RRule.DAILY,
+      interval: interval,
+      wkst: RRule.MO,
+      dtstart: datetime(2023, 7, 1),
+      until: datetime(2023, 12, 31),
+      tzid: "Asia/Tokyo",
+    });
+
+  const handleOpenSideSheet = (index) => {
+    setSelectedRoutineIndex(index);
+  };
+
+  const handleCloseSideSheet = () => {
+    setSelectedRoutineIndex(-1);
+  };
 
   return (
-    <div>
-      <h1>Routine</h1>
-      <FlyingPeep>
-        <div>{console.log("Dummy:", routineList)}</div>
-      </FlyingPeep>
-    </div>
+    <MainLayout>
+      <div className={styles.container}>
+        <div className={styles.leftBox}>
+          <DraggableList onOpenSideSheet={handleOpenSideSheet} />
+        </div>
+        <div>{console.log("rea func: ", rule(3).all())}</div>
+        <div className={styles.rightBox}>
+          <RoutineSideSheet
+            routineIndex={selectedRoutineIndex}
+            onClose={handleCloseSideSheet}
+          />
+        </div>
+      </div>
+    </MainLayout>
   );
 }
-
-Routine.layout = MainLayout;
 
 export default Routine;

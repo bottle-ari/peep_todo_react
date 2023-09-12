@@ -7,7 +7,6 @@ const RoutineContext = createContext();
 
 export const RoutineProvider = ({ children }) => {
   const [routineList, setRoutineList] = useState([]);
-
   // RoutineList init from .json
   useEffect(() => {
     let initRoutineList = [];
@@ -23,19 +22,19 @@ export const RoutineProvider = ({ children }) => {
         selected: false,
       });
       const Routine = new RoutineModel({
+        uniq_id: Routine_data.routine.uniq_id,
         category: Category,
         category_id: Routine_data.routine.category_id,
         reminder_id: Routine_data.routine.reminder_id,
         name: Routine_data.routine.name,
         is_active: Routine_data.routine.is_active,
-        subtodo: Routine_data.routine.subtodo,
+        subtodo: Routine_data.routine.subtodo || [],
         priority: Routine_data.routine.priority,
         order: Routine_data.routine.order,
       });
 
       initRoutineList = [...initRoutineList, Routine];
     });
-
     setRoutineList(initRoutineList);
   }, []);
 

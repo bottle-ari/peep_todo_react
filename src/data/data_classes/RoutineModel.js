@@ -1,5 +1,6 @@
 class RoutineModel {
   constructor({
+    uniq_id,
     category,
     category_id,
     reminder_id,
@@ -9,7 +10,8 @@ class RoutineModel {
     priority,
     order,
   }) {
-    (this.category = category),
+    (this.uniq_id = uniq_id),
+      (this.category = category),
       (this.category_id = category_id),
       (this.reminder_id = reminder_id),
       (this.name = name),

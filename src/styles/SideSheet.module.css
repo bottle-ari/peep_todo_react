@@ -27,3 +27,20 @@
   display: block;
   margin-top: 10px;
 }
+
+.modal-sheet {
+  position: fixed;
+  top: auto;
+  bottom: -50%;
+  right: 0;
+  width: calc(50% - 110px);
+  height: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: bottom 0.3s ease-out;
+  z-index: 1000;
+}
+
+.modal-sheet.open {
+  bottom: 0;
+}
