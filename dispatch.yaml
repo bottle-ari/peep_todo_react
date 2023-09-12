@@ -1,5 +1,7 @@
 dispatch:
   - url: "peeptodo.com/"
     service: default
+  - url: "peeptodo.com/api/google_oauth"
+    service: default
   - url: "peeptodo.com/api/*"
     service: backend-service
