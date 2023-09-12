@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useScheduledTodoContext } from "@/context/scheduled_todo_context";
 import moment from "moment";
+import SubtodoItem from "./subtodo_item";
 
-function ScheduledTodoItem({
-  selectedDate,
-  categoryIndex,
-  todoIndex,
-  openSideSheet,
-}) {
+function TodoItem({ selectedDate, categoryIndex, todoIndex, openSideSheet }) {
+  // todo 객체 가져오기
   const { scheduledTodoData, setScheduledTodoData } = useScheduledTodoContext();
   const categoryData = scheduledTodoData.get(
     moment(selectedDate).format("YYYYMMDD")
@@ -16,7 +13,9 @@ function ScheduledTodoItem({
   const todo = categoryData.todoList[todoIndex];
   const color = categoryData.category.color;
 
-  const toggleCheck = (day, categoryIndex, todoIndex) => {
+  // toggle check
+  const toggleCheck = () => {
+    const day = moment(selectedDate).format("YYYYMMDD");
     const updatedScheduledTodoData = new Map(scheduledTodoData);
 
     const newCategoryList = [...updatedScheduledTodoData.get(day)];
@@ -37,6 +36,14 @@ function ScheduledTodoItem({
     setScheduledTodoData(updatedScheduledTodoData);
   };
 
+  /* Sub Todo 보이기 & 숨기기 */
+  const [subtodoHide, setSubtodoHide] = useState(false);
+
+  const handleHide = () => {
+    const _subtodoHide = subtodoHide;
+    setSubtodoHide(!_subtodoHide);
+  };
+
   return (
     <li>
       <div className="flex items-center">
@@ -44,13 +51,7 @@ function ScheduledTodoItem({
           <HiddenCheckbox
             type="checkbox"
             checked={todo.completed_at !== null}
-            onChange={() =>
-              toggleCheck(
-                moment(selectedDate).format("YYYYMMDD"),
-                categoryIndex,
-                todoIndex
-              )
-            }
+            onChange={toggleCheck}
           />
           <StyledCheckbox color={color} checked={todo.completed_at !== null}>
             <Icon viewBox="0 0 24 24">
@@ -65,12 +66,28 @@ function ScheduledTodoItem({
         >
           {todo.name}
         </span>
+
+        <span className="ml-5" onClick={handleHide}>
+          v
+        </span>
       </div>
+      {subtodoHide === false && (
+        <li className="ml-8">
+          {todo.subtodo_list.map((subtodo, subtodoIndex) => (
+            <SubtodoItem
+              selectedDate={selectedDate}
+              categoryIndex={categoryIndex}
+              todoIndex={todoIndex}
+              subtodoIndex={subtodoIndex}
+            />
+          ))}
+        </li>
+      )}
     </li>
   );
 }
 
-export default ScheduledTodoItem;
+export default TodoItem;
 
 const CheckboxWrapper = styled.label`
   display: inline-block;

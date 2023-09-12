@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
+import SubtodoItem from "./subtodo_item";
 
-function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
+function TodoItem({ categoryIndex, todoIndex, openSideSheet }) {
   const { constantTodoList, setConstantTodoList } = useConstantTodoContext();
   const todo = constantTodoList[categoryIndex].todoList[todoIndex];
   const color = constantTodoList[categoryIndex].category.color;
 
-  const toggleCheck = (categoryIndex, todoIndex) => {
+  const toggleCheck = () => {
     const updatedConstantTodoList = [...constantTodoList];
 
     // 완료되지 않은 Todo 일 경우
@@ -35,6 +36,14 @@ function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
     setConstantTodoList(updatedConstantTodoList);
   };
 
+  /* Sub Todo 보이기 & 숨기기 */
+  const [subtodoHide, setSubtodoHide] = useState(false);
+
+  const handleHide = () => {
+    const _subtodoHide = subtodoHide;
+    setSubtodoHide(!_subtodoHide);
+  };
+
   return (
     <li>
       <div className="flex items-center">
@@ -42,7 +51,7 @@ function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
           <HiddenCheckbox
             type="checkbox"
             checked={todo.completed_at !== null}
-            onChange={() => toggleCheck(categoryIndex, todoIndex)}
+            onChange={toggleCheck}
           />
           <StyledCheckbox color={color} checked={todo.completed_at !== null}>
             <Icon viewBox="0 0 24 24">
@@ -57,12 +66,27 @@ function ConstantTodoItem({ categoryIndex, todoIndex, openSideSheet }) {
         >
           {todo.name}
         </span>
+
+        <span className="ml-5" onClick={handleHide}>
+          v
+        </span>
       </div>
+      {subtodoHide === false && (
+        <li className="ml-8">
+          {todo.subtodo_list.map((subtodo, subtodoIndex) => (
+            <SubtodoItem
+              categoryIndex={categoryIndex}
+              todoIndex={todoIndex}
+              subtodoIndex={subtodoIndex}
+            />
+          ))}
+        </li>
+      )}
     </li>
   );
 }
 
-export default ConstantTodoItem;
+export default TodoItem;
 
 const CheckboxWrapper = styled.label`
   display: inline-block;
