@@ -1,0 +1,69 @@
+{
+  "content": [
+    {
+      "category": {
+        "id": 1,
+        "name": "할 일",
+        "emoji": "🤔",
+        "color": "#BD00FF",
+        "order": 1
+      },
+      "routine": {
+        "uniq_id": 1,
+        "category_id": 1,
+        "reminder_id": null,
+        "name": "학교가서 할 일",
+        "is_active": false,
+        "priority": 0,
+        "subtodo": [
+          "물통에 물 채워넣기",
+          "1000원 학식 먹기",
+          "커피 안시키고 카나에 앉아있기"
+        ],
+        "order": 0
+      }
+    },
+    {
+      "category": {
+        "id": 2,
+        "name": "공부",
+        "emoji": "📝",
+        "color": "#00DB58",
+        "order": 2
+      },
+      "routine": {
+        "uniq_id": 2,
+        "category_id": 2,
+        "reminder_id": null,
+        "name": "블락체인 복습",
+        "is_active": true,
+        "priority": 3,
+        "subtodo": [
+          "나카모토 사토시 논문 보기",
+          "Genesis block",
+          "버킷리스트로 돈내고 비트코인에 박을 정보 생각하기"
+        ],
+        "order": 1
+      }
+    },
+    {
+      "category": {
+        "id": 2,
+        "name": "공부",
+        "emoji": "📝",
+        "color": "#00DB58",
+        "order": 2
+      },
+      "routine": {
+        "uniq_id": 3,
+        "category_id": 2,
+        "reminder_id": null,
+        "name": "CNN 준계학습",
+        "is_active": false,
+        "priority": 3,
+        "subtodo": [],
+        "order": 2
+      }
+    }
+  ]
+}
