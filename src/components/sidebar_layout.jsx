@@ -6,6 +6,7 @@ import CategoryModel from "@/data/data_classes/CategoryModel";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import CategoryItem from "./sidebar/category_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useRouter } from "next/router";
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useCategoryContext();
@@ -86,19 +87,20 @@ function Sidebar() {
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
+        const router = useRouter();
+        router.push("/login");
       });
   }, []);
 
   return (
     <>
       <div id="sidebar">
-        <div>
-          <h1>name : {userProfile["name"]}</h1>
-          <h1>email : {userProfile["email"]}</h1>
-          <h1>picture : {userProfile["picture"]}</h1>
-        </div>
         <div id="userProfile">
-          <ProfileField name={"삐약이"} email={"B_yacc2@naver.com"} />
+          <ProfileField
+            name={userProfile["name"]}
+            email={userProfile["email"]}
+            picture={userProfile["picture"]}
+          />
         </div>
         <nav>
           <ul>
