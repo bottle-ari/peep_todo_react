@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import ProfileField from "./sidebar/profile_item";
 import MenuField from "./sidebar/menu_item";
 import { useCategoryContext } from "@/context/category_context";
@@ -61,9 +61,38 @@ function Sidebar() {
     }
   };
 
+  /* GET : 요청, profile */
+  const [userProfile, setUserProfile] = useState();
+
+  useEffect(() => {
+    // GET 요청을 보낼 URL
+    const url = "https://peeptodo.com/api/profiles";
+
+    // Fetch API를 사용한 GET 요청
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // JSON 형식의 응답 데이터를 파싱
+      })
+      .then((data) => {
+        console.log(data); // 응답 데이터를 처리
+        setUserProfile(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  }, []);
+
   return (
     <>
       <div id="sidebar">
+        <div>
+          <h1>name : {userProfile["name"]}</h1>
+          <h1>email : {userProfile["email"]}</h1>
+          <h1>picture : {userProfile["picture"]}</h1>
+        </div>
         <div id="userProfile">
           <ProfileField name={"삐약이"} email={"B_yacc2@naver.com"} />
         </div>
