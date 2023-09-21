@@ -68,11 +68,7 @@ function Sidebar() {
     email: "B_yacc2@naver.com",
     picture: "picture",
   });
-
-  const GoBackToLogin = () => {
-    const router = useRouter();
-    router.push("/login");
-  };
+  const router = useRouter();
 
   useEffect(() => {
     // GET 요청을 보낼 URL
@@ -92,7 +88,7 @@ function Sidebar() {
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
-        GoBackToLogin();
+        router.push("/login");
       });
   }, []);
 
