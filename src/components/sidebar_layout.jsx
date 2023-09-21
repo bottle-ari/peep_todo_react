@@ -66,7 +66,7 @@ function Sidebar() {
   const [userProfile, setUserProfile] = useState({
     name: "삐약이",
     email: "B_yacc2@naver.com",
-    picture: "picture",
+    picture: "https://via.placeholder.com/50.jpg/",
   });
   const router = useRouter();
 
