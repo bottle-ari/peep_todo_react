@@ -69,6 +69,11 @@ function Sidebar() {
     picture: "picture",
   });
 
+  const goBackToLogin = () => {
+    const router = useRouter();
+    router.push("/login");
+  };
+
   useEffect(() => {
     // GET 요청을 보낼 URL
     const url = "https://peeptodo.com/api/profiles";
@@ -87,8 +92,7 @@ function Sidebar() {
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
-        const router = useRouter();
-        router.push("/login");
+        goBackToLogin();
       });
   }, []);
 
