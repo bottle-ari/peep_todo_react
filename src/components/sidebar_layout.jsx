@@ -69,7 +69,7 @@ function Sidebar() {
     picture: "picture",
   });
 
-  const goBackToLogin = () => {
+  const GoBackToLogin = () => {
     const router = useRouter();
     router.push("/login");
   };
@@ -92,7 +92,7 @@ function Sidebar() {
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
-        goBackToLogin();
+        GoBackToLogin();
       });
   }, []);
 
