@@ -62,7 +62,11 @@ function Sidebar() {
   };
 
   /* GET : 요청, profile */
-  const [userProfile, setUserProfile] = useState();
+  const [userProfile, setUserProfile] = useState({
+    name: "삐약이",
+    email: "B_yacc2@naver.com",
+    picture: "picture",
+  });
 
   useEffect(() => {
     // GET 요청을 보낼 URL
