@@ -9,6 +9,7 @@ export const CategoryProvider = ({ children }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
 
+  /*
   useEffect(() => {
     // GET 요청을 보낼 URL
     const url = "https://peeptodo.com/api/categories/3";
@@ -28,6 +29,7 @@ export const CategoryProvider = ({ children }) => {
         console.error("There was a problem with the fetch operation:", error);
       });
   }, []);
+  */
 
   // categoryList init from .json
   useEffect(() => {

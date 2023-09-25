@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import ProfileField from "./sidebar/profile_item";
 import MenuField from "./sidebar/menu_item";
 import { useCategoryContext } from "@/context/category_context";
@@ -6,6 +6,7 @@ import CategoryModel from "@/data/data_classes/CategoryModel";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
 import CategoryItem from "./sidebar/category_item";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useRouter } from "next/router";
 
 function Sidebar() {
   const { categoryList, setCategoryList } = useCategoryContext();
@@ -61,11 +62,45 @@ function Sidebar() {
     }
   };
 
+  /* GET : 요청, profile */
+  const [userProfile, setUserProfile] = useState({
+    name: "삐약이",
+    email: "B_yacc2@naver.com",
+    picture: "https://via.placeholder.com/50.jpg/",
+  });
+  const router = useRouter();
+
+  useEffect(() => {
+    // GET 요청을 보낼 URL
+    const url = "https://peeptodo.com/api/profiles";
+
+    // Fetch API를 사용한 GET 요청
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // JSON 형식의 응답 데이터를 파싱
+      })
+      .then((data) => {
+        console.log(data); // 응답 데이터를 처리
+        setUserProfile(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+        router.push("/login");
+      });
+  }, []);
+
   return (
     <>
       <div id="sidebar">
         <div id="userProfile">
-          <ProfileField name={"삐약이"} email={"B_yacc2@naver.com"} />
+          <ProfileField
+            name={userProfile["name"]}
+            email={userProfile["email"]}
+            picture={userProfile["picture"]}
+          />
         </div>
         <nav>
           <ul>
