@@ -68,29 +68,29 @@ function Sidebar() {
     email: "B_yacc2@naver.com",
     picture: "https://via.placeholder.com/50.jpg/",
   });
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    // GET 요청을 보낼 URL
-    const url = "https://peeptodo.com/api/profiles";
+  // useEffect(() => {
+  //   // GET 요청을 보낼 URL
+  //   const url = "https://peeptodo.com/api/profiles";
 
-    // Fetch API를 사용한 GET 요청
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json(); // JSON 형식의 응답 데이터를 파싱
-      })
-      .then((data) => {
-        console.log(data); // 응답 데이터를 처리
-        setUserProfile(data);
-      })
-      .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
-        router.push("/login");
-      });
-  }, []);
+  //   // Fetch API를 사용한 GET 요청
+  //   fetch(url)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json(); // JSON 형식의 응답 데이터를 파싱
+  //     })
+  //     .then((data) => {
+  //       console.log(data); // 응답 데이터를 처리
+  //       setUserProfile(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("There was a problem with the fetch operation:", error);
+  //       router.push("/login");
+  //     });
+  // }, []);
 
   return (
     <>
