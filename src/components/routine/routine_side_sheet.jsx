@@ -5,20 +5,73 @@ import { ReactSortable } from "react-sortablejs";
 import styles from "@/styles/SideSheet.module.css"; // module.css 파일 임포트
 import routineStyles from "@/styles/routine.module.css";
 
-function RoutineSideSheet({ routineIndex, onClose }) {
+function RoutineSideSheet({ routineIndex, onClose, onOpenPopUp }) {
   const { routineList, setRoutineList } = useRoutineContext();
-  const [isNodalVisible, setIsNodalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isInputVisible, setInputVisible] = useState(false);
+  const [selectedButton, setSelectedButton] = useState("");
 
   const routine = routineList[routineIndex];
+  const inputRef = useRef();
+
+  const [intervalDaily, setIntervalDaily] = useState({
+    interval: null,
+    interval_to: null,
+  });
+
+  const [intervalWeekly, setIntervalWeekly] = useState({
+    interval: null,
+    interval_to: null,
+  });
+
+  const [intervalMonthly, setIntervalMonthly] = useState({
+    interval: null,
+    interval_to: null,
+  });
+
+  const [intervalYearly, setIntervalYearly] = useState({
+    interval: null,
+    interval_to: null,
+  });
+
+  // 숫자 입력을 처리하는 핸들러 함수 (각 버튼별로 별도의 상태를 업데이트)
+  const handleNumberChange = (event, intervalSetter) => {
+    const value = event.target.value;
+    intervalSetter((prevInterval) => ({
+      ...prevInterval,
+      interval: value,
+    }));
+  };
+
+  const handleMonthChange = (event, intervalSetter) => {
+    const value = event.target.value;
+    intervalSetter((prevInterval) => ({
+      ...prevInterval,
+      interval_to: value,
+    }));
+  };
+
+  // Enter 키 입력을 처리하는 핸들러 함수
+  const handleEnterKey = (event) => {
+    if (event.key === "Enter") {
+      setInputVisible(false);
+    }
+  };
 
   // 버튼 클릭 시 창 닫습니다.
   const handleClose = () => {
     onClose();
   };
 
-  // 버튼 클릭 시 nodal-sheet의 표시 여부를 토글합니다.
-  const handleNodalButtonClick = () => {
-    setIsNodalVisible(!isNodalVisible);
+  // 버튼 클릭 시 modal-sheet의 표시 여부를 토글합니다.
+  const handleModalButtonClick = () => {
+    console.log("routine_pop_up Modal click");
+    onOpenPopUp(true);
+  };
+
+  // 입력 클릭 시 input의 표시 여부 토글
+  const handleNumberClick = () => {
+    setInputVisible(!isInputVisible);
   };
 
   const sortableOptions = {
@@ -77,24 +130,12 @@ function RoutineSideSheet({ routineIndex, onClose }) {
             </div>
           </ul>
           {routine && (
-            <>
+            <div>
               <p>+</p>
-              <div>
-                <button onClick={handleNodalButtonClick}>반복조건</button>
-                {isNodalVisible && (
-                  <div className={`${styles["nodal-sheet"]} ${styles.open}`}>
-                    {<h>nodal</h> /* nodal-sheet 내용 */}
-                    {<h>yha hoo</h>}
-                  </div>
-                )}
-              </div>
-              {isNodalVisible ? null : (
-                <>
-                  <p>중요도: {routine.priority}</p>
-                  <p>리마인더: {routine.reminder_id}</p>
-                </>
-              )}
-            </>
+              <button onClick={() => handleModalButtonClick()}>반복조건</button>
+              <p>중요도: {routine.priority}</p>
+              <p>리마인더: {routine.reminder_id}</p>
+            </div>
           )}
           <button onClick={handleClose}>Close</button>
         </div>
