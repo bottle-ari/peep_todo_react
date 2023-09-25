@@ -58,3 +58,83 @@
   font-size: 24px;
   width: 320px; /*아이템 리스트 고정 크기*/
 }
+
+/* 팝업 스타일 */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 팝업 뒷 배경에 반투명 레이어 추가 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* 다른 요소 위에 표시되도록 설정 */
+}
+
+/* 팝업 내용 스타일 */
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 50%;
+  height: 50%;
+  text-align: center;
+}
+
+.popup .button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+  width: 100%;
+  height: 10%;
+  transition: transform 0.3s; /* 슬라이딩 효과 적용 */
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+/* 팝업 내용 안의 버튼 스타일 */
+.popup .button-container button {
+  flex: 1;
+  padding: 10px 20px; /* 버튼 내부 여백 설정 */
+  background-color: #f9f9f9; /* 배경색 설정 */
+  color: black; /* 글자색 설정 */
+  border: none; /* 테두리 제거 */
+  cursor: pointer; /* 포인터 커서 설정 */
+  transition: background-color 0.3s; /* 배경색에 트랜지션 적용 */
+  white-space: nowrap; /* 텍스트의 줄 바꿈을 금지합니다. */
+  text-overflow: ellipsis; /* 텍스트가 버튼 영역을 넘어갈 경우 "..."으로 표시됩니다. */
+}
+
+.button-container button:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.button-container button:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+/* 선택된 버튼 스타일 */
+.popup .button-container button.active {
+  background-color: red !important; /* 선택된 버튼의 배경색을 노란색으로 설정 */
+  color: black !important; /* 선택된 버튼의 글자색을 설정 */
+  transition: background-color 1s, transform 0.3s; /* 배경색과 변환에 트랜지션 적용 */
+  transform: translateX(0); /* 초기 위치 (슬라이딩 이전) */
+  border-radius: 20px;
+  transform-origin: center;
+}
+
+/* 선택되지 않은 버튼 스타일 */
+.popup .button-container button.inactive {
+  background-color: #f9f9f9 !important; /* 선택되지 않은 버튼의 배경색을 설정 */
+  color: black !important; /* 선택되지 않은 버튼의 글자색을 설정 */
+  transition: background-color 1s, transform 0.3s; /* 배경색과 변환에 트랜지션 적용 */
+  transform: translateX(); /* 초기 위치 (오른쪽으로 슬라이딩) */
+  border-radius: 20px;
+  transform-origin: center;
+}
