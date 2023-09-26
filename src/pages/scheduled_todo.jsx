@@ -181,23 +181,35 @@ function ScheduledTodo() {
     let newEvents = [];
 
     scheduledTodoData.forEach((value, key) => {
+      const year = parseInt(key.slice(0, 4));
+      const month = parseInt(key.slice(4, 6));
+      const day = parseInt(key.slice(6, 8));
+
       value.map((categoryData) => {
-        const year = parseInt(key.slice(0, 4));
-        const month = parseInt(key.slice(4, 6));
-        const day = parseInt(key.slice(6, 8));
+        let todoCount = 0;
+        let completedTodoCount = 0;
+
+        categoryData.todoList.map((todo) => {
+          todoCount++;
+          if (todo.completed_at != null) {
+            completedTodoCount++;
+          }
+        });
 
         newEvents = [
           ...newEvents,
           {
-            title: categoryData.category.name,
+            title: ".",
             start: new Date(year, month - 1, day),
             end: new Date(year, month - 1, day + 1),
+            color: categoryData.category.color,
+            percent: (completedTodoCount / todoCount) * 100,
           },
         ];
-
-        setEvents(newEvents);
       });
     });
+
+    setEvents(newEvents);
   }, [scheduledTodoData]);
 
   return (
