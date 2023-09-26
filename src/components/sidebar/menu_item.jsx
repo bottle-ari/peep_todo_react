@@ -7,7 +7,7 @@ function MenuField({ icon, name, link }) {
       <Image src={icon} alt="MENU" width={28} height={28} />
       <div className="ml-5">
         <Link href={link}>
-          <span className="block text-l font-semibold">{name}</span>
+          <span className="block">{name}</span>
         </Link>
       </div>
     </div>

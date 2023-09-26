@@ -42,43 +42,7 @@ body {
   background: rgb(var(--real-white-rgb));
 }
 
-#sidebar {
-  width: 220px;
-  height: 100vh; /* 화면 높이에 맞게 사이드바 높이 설정 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgb(var(--ptd-white-rgb));
-  padding: 0px;
-  border-right: 1px solid rgb(var(--divider-rgb));
-}
-
-#sidebar h1 {
-  font-size: 24px;
-}
-
-#sidebar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-#sidebar li {
-  padding: 10px 0;
-}
-
-#sidebar a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  display: block;
-}
-
 #detail {
-  margin-left: 250px; /* 사이드바 너비만큼 컨텐츠를 이동시킴 */
+  margin-left: 250px;
   padding: 20px;
-}
-
-#userProfile {
-  background-color: #ffdd6f;
 }

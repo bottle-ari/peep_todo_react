@@ -1,0 +1,77 @@
+.listItem {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.listItem .background {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10px; /* 좌우 여백 */
+  right: 10px; /* 좌우 여백 */
+  transform: translateY(-50%); /* 세로 중앙 정렬 */
+  height: calc(100% - 10px); /* 상하 여백 */
+  border-radius: 20px;
+  background-color: rgb(var(--ptd-light-grey-rgb));
+  z-index: -1; /* 다른 요소들 아래에 배치 */
+  display: none; /* 기본적으로 숨깁니다. */
+}
+
+.listItem.checked .background {
+  display: block; /* 체크된 항목에만 배경을 표시합니다. */
+}
+
+.listItem .emoji {
+  font-size: 24px;
+  margin-left: 24px;
+  margin-right: 20px;
+}
+
+.listItem .name {
+  font-size: 16px;
+  font-weight: 600;
+  color: inherit;
+}
+
+.listItem input[type="checkbox"] {
+  display: none;
+}
+
+.listItem .checkIcon {
+  position: absolute;
+  right: 24px; /* 오른쪽 위치를 조절하여 왼쪽으로 이동 */
+  width: 24px; /* 아이콘의 크기를 키웁니다. */
+  height: 24px; /* 아이콘의 크기를 키웁니다. */
+  background-color: rgb(var(--secondary-dark-rgb));
+  border-radius: 50%;
+  display: none;
+}
+
+.listItem .checkIcon::before,
+.listItem .checkIcon::after {
+  content: "";
+  position: absolute;
+  background-color: white;
+}
+
+.listItem .checkIcon::before {
+  width: 2px; /* 체크의 두께를 조절합니다. */
+  height: 9px; /* 체크의 길이를 조절합니다. */
+  top: 8px; /* 체크의 위치를 조절합니다. */
+  left: 12px; /* 체크의 위치를 조절합니다. */
+  transform: rotate(45deg);
+}
+
+.listItem .checkIcon::after {
+  width: 2px; /* 체크의 두께를 조절합니다. */
+  height: 6px; /* 체크의 길이를 조절합니다. */
+  top: 10.5px; /* 체크의 위치를 조절합니다. */
+  left: 8px; /* 체크의 위치를 조절합니다. */
+  transform: rotate(-45deg);
+}
+
+.listItem.checked .checkIcon {
+  display: block;
+}

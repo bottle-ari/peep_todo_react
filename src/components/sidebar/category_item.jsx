@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styles from "../../styles/sidebar/categories.module.css";
 import { useCategoryContext } from "@/context/category_context";
 
 function CategoryItem({ categoryIndex }) {
@@ -24,9 +24,18 @@ function CategoryItem({ categoryIndex }) {
   };
 
   return (
-    <li onClick={() => handleSelect(categoryIndex)}>
-      {category.emoji + category.name}
-      <input type="checkbox" checked={category.selected}></input>
+    <li
+      className={`${styles.listItem} ${
+        category.selected ? styles.checked : ""
+      }`}
+      onClick={() => handleSelect(categoryIndex)}
+      style={{ color: category.color }}
+    >
+      <div className={styles.background}></div> {/* 배경을 위한 요소 추가 */}
+      <span className={styles.emoji}>{category.emoji}</span>
+      <span className={styles.name}>{category.name}</span>
+      <input type="checkbox" checked={category.selected} />
+      <span className={styles.checkIcon}></span>
     </li>
   );
 }

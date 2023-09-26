@@ -1,6 +1,7 @@
 import { useState, useEffect, use } from "react";
 import ProfileField from "./sidebar/profile_item";
 import MenuField from "./sidebar/menu_item";
+import styles from "../styles/sidebar/sidebar.module.css";
 import { useCategoryContext } from "@/context/category_context";
 import CategoryModel from "@/data/data_classes/CategoryModel";
 import { useConstantTodoContext } from "@/context/constant_todo_context";
@@ -94,8 +95,8 @@ function Sidebar() {
 
   return (
     <>
-      <div id="sidebar">
-        <div id="userProfile">
+      <div className={styles.sidebar}>
+        <div className={styles.userProfile}>
           <ProfileField
             name={userProfile["name"]}
             email={userProfile["email"]}

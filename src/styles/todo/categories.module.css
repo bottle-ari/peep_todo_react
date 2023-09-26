@@ -1,0 +1,51 @@
+.container {
+    background-color: lightgray;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .container .text {
+    color: var(--specified-color);
+  }
+  
+  .button {
+    background-color: yellow;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button .plus {
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    position: relative;
+  }
+  
+  .button .plus:before, .button .plus:after {
+    content: "";
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .button .plus:before {
+    width: 2px;
+    height: 100%;
+  }
+  
+  .button .plus:after {
+    width: 100%;
+    height: 2px;
+  }
+  
