@@ -7,9 +7,11 @@ const localizer = momentLocalizer(moment);
 
 const MyEvent = ({ event }) => {
   const customStyle = {
-    width: event.percent + "%",
+    width: event.percent == 0 ? "4px" : event.percent + "%",
+    height: "15px",
     backgroundColor: event.color, // 배경색을 커스텀 컬러로 설정
-    color: "#00000000", // 텍스트 색상을 흰색으로 설정
+    color: "#00000000", // 텍스트 색상을 투명으로 설정
+    borderRadius: "2px", // 모서리를 둥글게 만듭니다.
   };
 
   return <div style={customStyle}>{event.title}</div>;
@@ -55,7 +57,7 @@ function CustomMonthView({ selectedDate, onDateClick }) {
     setEvents(newEvents);
   }, [scheduledTodoData]);
 
-  const eventStyleGetter = (event) => {
+  const eventPropGetter = (event) => {
     if (selectedDate && moment(event.start).isSame(selectedDate, "day")) {
       return { className: "selected-date" };
     }
@@ -70,14 +72,15 @@ function CustomMonthView({ selectedDate, onDateClick }) {
       defaultView="month"
       selectable
       onSelectSlot={(slotInfo) => onDateClick(slotInfo.start)}
-      eventPropGetter={eventStyleGetter}
+      eventPropGetter={eventPropGetter}
       startAccessor="start"
       endAccessor="end"
       style={{ height: 600, width: 500 }}
       components={{
-        event: MyEvent, // 커스텀 이벤트 컴포넌트를 사용
-        eventWrapper: MyEvent,
+        event: () => null, // 기본 이벤트 UI 숨기기
+        eventWrapper: MyEvent, // 커스텀 이벤트 컴포넌트 사용
       }}
+      showAllEvents={true} // 모든 이벤트를 표시합니다
     />
   );
 }
